@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MorseHub · 60+ All-in-One Text Tools</title>
+    <title>MorseHub · 65+ All-in-One Text Tools</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -12,11 +12,10 @@
             --surface: rgba(255, 255, 255, 0.04);
             --border: rgba(255, 255, 255, 0.08);
             --accent: #a855f7;
-            --accent2: #7c3aed;
             --text: #e2e8f0;
             --dim: rgba(255, 255, 255, 0.6);
             --radius: 16px;
-            --transition: 0.25s ease;
+            --transition: 0.2s ease;
         }
         * {
             margin: 0;
@@ -189,7 +188,8 @@
         input[type="text"],
         input[type="number"],
         input[type="date"],
-        input[type="color"] {
+        input[type="color"],
+        input[type="url"] {
             width: 100%;
             padding: 0.7rem 0.9rem;
             background: rgba(0, 0, 0, 0.35);
@@ -335,6 +335,14 @@
             padding: 6px;
             max-width: 200px;
         }
+        .preview-frame {
+            width: 100%;
+            height: 300px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            color: #000;
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 0 0.8rem;
@@ -342,9 +350,6 @@
             .tool-card {
                 padding: 1.2rem;
                 border-radius: 18px;
-            }
-            .features-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
             .hero h1 {
                 font-size: 1.8rem;
@@ -354,78 +359,57 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-morse-code"></i>
-            <span>MorseHub</span>
-            <span class="badge">60+ Tools</span>
-        </div>
+        <div class="logo"><i class="fas fa-morse-code"></i><span>MorseHub</span><span class="badge">65+ Tools</span></div>
         <div class="nav-menu">
             <button class="nav-item active" data-tool="morse"><i class="fas fa-morse-code"></i> Morse</button>
             <button class="nav-item" data-tool="translate"><i class="fas fa-language"></i> Translate</button>
             <button class="nav-item" data-tool="tts"><i class="fas fa-volume-up"></i> Text to Speech</button>
-            <button class="nav-item" data-tool="texttools"><i class="fas fa-wand-magic"></i> Text Tools (60+)</button>
+            <button class="nav-item" data-tool="texttools"><i class="fas fa-wand-magic"></i> Text Tools (65+)</button>
         </div>
     </nav>
 
     <div class="container">
-        <div class="hero">
-            <h1>Transform Your Text</h1>
-            <p>All-in-one platform · 60+ utilities with real translation, QR, TTS, ciphers & more</p>
-        </div>
+        <div class="hero"><h1>Transform Your Text</h1><p>All-in-one platform · 65+ utilities with real translation, QR, TTS, ciphers, HTML preview & more</p></div>
 
         <!-- Morse Tool -->
         <div id="morse-tool" class="tool-card active">
             <div class="tool-header"><i class="fas fa-morse-code"></i><h2>Morse Code Converter</h2><span class="status-badge">Real-time</span></div>
-            <div class="input-group"><label><i class="fas fa-exchange-alt"></i> Mode</label><select id="morseMode"><option value="textToMorse">📝 Text → Morse</option><option value="morseToText">🔊 Morse → Text</option></select></div>
-            <div class="input-group"><label><i class="fas fa-keyboard"></i> Input</label><textarea id="morseInput" rows="4" placeholder="Enter text or Morse code..."></textarea></div>
-            <div class="input-group"><label><i class="fas fa-code"></i> Result</label><textarea id="morseOutput" rows="4" readonly placeholder="Result..."></textarea></div>
+            <div class="input-group"><label>Mode</label><select id="morseMode"><option value="textToMorse">Text → Morse</option><option value="morseToText">Morse → Text</option></select></div>
+            <div class="input-group"><label>Input</label><textarea id="morseInput" rows="4" placeholder="Enter text or Morse..."></textarea></div>
+            <div class="input-group"><label>Result</label><textarea id="morseOutput" rows="4" readonly></textarea></div>
             <div class="btn-row">
-                <button class="btn btn-pri" id="morseConvertBtn"><i class="fas fa-sync-alt"></i> Convert</button>
-                <button class="btn btn-sec" id="morsePlayBtn"><i class="fas fa-play"></i> Play Sound</button>
-                <button class="btn btn-sec" id="morseCopyBtn"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-out" id="morseClearBtn"><i class="fas fa-trash-alt"></i> Clear</button>
-                <button class="btn btn-pri" id="morseDownloadWav"><i class="fas fa-download"></i> Download WAV</button>
+                <button class="btn btn-pri" id="morseConvertBtn">Convert</button>
+                <button class="btn btn-sec" id="morsePlayBtn">Play</button>
+                <button class="btn btn-sec" id="morseCopyBtn">Copy</button>
+                <button class="btn btn-out" id="morseClearBtn">Clear</button>
+                <button class="btn btn-pri" id="morseDownloadWav">Download WAV</button>
             </div>
-            <div class="slider-row"><span>Speed:</span><input type="range" id="morseSpeed" min="40" max="300" value="100"><span class="val" id="morseSpeedVal">100</span> ms/dot <span>Freq:</span><input type="range" id="morseFreq" min="300" max="1200" value="700"><span class="val" id="morseFreqVal">700</span> Hz</div>
+            <div class="slider-row"><span>Speed:</span><input type="range" id="morseSpeed" min="40" max="300" value="100"><span class="val" id="morseSpeedVal">100</span> ms <span>Freq:</span><input type="range" id="morseFreq" min="300" max="1200" value="700"><span class="val" id="morseFreqVal">700</span> Hz</div>
         </div>
 
-        <!-- Translate Tool (with real Google Translate API) -->
+        <!-- Translate Tool -->
         <div id="translate-tool" class="tool-card">
             <div class="tool-header"><i class="fas fa-language"></i><h2>Google Translate</h2><span class="status-badge">Real API</span></div>
-            <div class="input-group"><label>From</label><select id="sourceLang"><option value="auto">🔍 Detect Language</option><option value="id">🇮🇩 Indonesian</option><option value="en">🇺🇸 English</option><option value="ar">🇸🇦 Arabic</option><option value="zh">🇨🇳 Chinese</option><option value="es">🇪🇸 Spanish</option><option value="fr">🇫🇷 French</option><option value="de">🇩🇪 German</option><option value="hi">🇮🇳 Hindi</option><option value="ja">🇯🇵 Japanese</option><option value="ko">🇰🇷 Korean</option><option value="ru">🇷🇺 Russian</option><option value="pt">🇵🇹 Portuguese</option></select></div>
-            <div class="input-group"><label>To</label><select id="targetLang"><option value="id" selected>🇮🇩 Indonesian</option><option value="en">🇺🇸 English</option><option value="ar">🇸🇦 Arabic</option><option value="zh">🇨🇳 Chinese</option><option value="es">🇪🇸 Spanish</option><option value="fr">🇫🇷 French</option><option value="de">🇩🇪 German</option><option value="hi">🇮🇳 Hindi</option><option value="ja">🇯🇵 Japanese</option><option value="ko">🇰🇷 Korean</option><option value="ru">🇷🇺 Russian</option><option value="pt">🇵🇹 Portuguese</option></select></div>
-            <div class="input-group"><label>Text</label><textarea id="translateInput" rows="4" placeholder="Enter text to translate..."></textarea></div>
-            <div class="input-group"><label>Translation</label><textarea id="translateOutput" rows="4" readonly placeholder="Translation..."></textarea></div>
-            <div class="btn-row">
-                <button class="btn btn-pri" id="translateBtn"><i class="fas fa-language"></i> Translate</button>
-                <button class="btn btn-sec" id="swapLangBtn"><i class="fas fa-exchange-alt"></i> Swap</button>
-                <button class="btn btn-sec" id="copyTranslateBtn"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-out" id="clearTranslateBtn"><i class="fas fa-trash-alt"></i> Clear</button>
-            </div>
+            <div class="input-group"><label>From</label><select id="sourceLang"><option value="auto">Detect</option><option value="id">Indonesian</option><option value="en">English</option><option value="ar">Arabic</option><option value="zh">Chinese</option><option value="es">Spanish</option><option value="fr">French</option><option value="de">German</option><option value="hi">Hindi</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="ru">Russian</option><option value="pt">Portuguese</option></select></div>
+            <div class="input-group"><label>To</label><select id="targetLang"><option value="id" selected>Indonesian</option><option value="en">English</option><option value="ar">Arabic</option><option value="zh">Chinese</option><option value="es">Spanish</option><option value="fr">French</option><option value="de">German</option><option value="hi">Hindi</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="ru">Russian</option><option value="pt">Portuguese</option></select></div>
+            <div class="input-group"><label>Text</label><textarea id="translateInput" rows="4" placeholder="Enter text..."></textarea></div>
+            <div class="input-group"><label>Translation</label><textarea id="translateOutput" rows="4" readonly></textarea></div>
+            <div class="btn-row"><button class="btn btn-pri" id="translateBtn">Translate</button><button class="btn btn-sec" id="swapLangBtn">Swap</button><button class="btn btn-sec" id="copyTranslateBtn">Copy</button><button class="btn btn-out" id="clearTranslateBtn">Clear</button></div>
         </div>
 
         <!-- TTS Tool -->
         <div id="tts-tool" class="tool-card">
             <div class="tool-header"><i class="fas fa-volume-up"></i><h2>Text to Speech</h2><span class="status-badge">Natural + Record</span></div>
             <div class="input-group"><label>Voice</label><select id="voiceSelect"><option value="">Default</option></select></div>
-            <div class="input-group"><label>Text</label><textarea id="ttsInput" rows="5" placeholder="Enter text to speak..."></textarea></div>
-            <div class="slider-row"><span>Rate:</span><input type="range" id="ttsRate" min="0.5" max="2" step="0.1" value="1"><span class="val" id="ttsRateVal">1.0</span><span>Pitch:</span><input type="range" id="ttsPitch" min="0.5" max="2" step="0.1" value="1"><span class="val" id="ttsPitchVal">1.0</span></div>
-            <div class="btn-row">
-                <button class="btn btn-pri" id="speakBtn"><i class="fas fa-play"></i> Speak</button>
-                <button class="btn btn-sec" id="pauseBtn"><i class="fas fa-pause"></i> Pause</button>
-                <button class="btn btn-sec" id="resumeBtn"><i class="fas fa-play-circle"></i> Resume</button>
-                <button class="btn btn-sec" id="stopBtn"><i class="fas fa-stop"></i> Stop</button>
-                <button class="btn btn-out" id="clearTtsBtn"><i class="fas fa-trash-alt"></i> Clear</button>
-                <button class="btn btn-pri" id="ttsDownloadBtn"><i class="fas fa-download"></i> Record & Download</button>
-            </div>
+            <div class="input-group"><label>Text</label><textarea id="ttsInput" rows="5" placeholder="Enter text..."></textarea></div>
+            <div class="slider-row"><span>Rate:</span><input type="range" id="ttsRate" min="0.5" max="2" step="0.1" value="1"><span class="val" id="ttsRateVal">1.0</span> <span>Pitch:</span><input type="range" id="ttsPitch" min="0.5" max="2" step="0.1" value="1"><span class="val" id="ttsPitchVal">1.0</span></div>
+            <div class="btn-row"><button class="btn btn-pri" id="speakBtn">Speak</button><button class="btn btn-sec" id="pauseBtn">Pause</button><button class="btn btn-sec" id="resumeBtn">Resume</button><button class="btn btn-sec" id="stopBtn">Stop</button><button class="btn btn-out" id="clearTtsBtn">Clear</button><button class="btn btn-pri" id="ttsDownloadBtn">Record & Download</button></div>
         </div>
 
-        <!-- Text Tools (60+) -->
+        <!-- Text Tools (65+) -->
         <div id="texttools-tool" class="tool-card">
-            <div class="tool-header"><i class="fas fa-wand-magic"></i><h2>Text Utilities (60+)</h2><span class="status-badge">All-in-One</span></div>
-            <div id="toolsGridContainer">
-                <div class="features-grid" id="toolsGrid"></div>
-            </div>
+            <div class="tool-header"><i class="fas fa-wand-magic"></i><h2>Text Utilities (65+)</h2><span class="status-badge">All-in-One</span></div>
+            <div id="toolsGridContainer"><div class="features-grid" id="toolsGrid"></div></div>
             <div id="toolWorkPanel" style="display:none;"></div>
             <button class="btn btn-out" id="backToGridBtn" style="display:none; margin-top:1rem;"><i class="fas fa-arrow-left"></i> Back to all tools</button>
         </div>
@@ -442,184 +426,193 @@
                 tts: document.getElementById('tts-tool'),
                 texttools: document.getElementById('texttools-tool')
             };
-            navItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    navItems.forEach(b => b.classList.remove('active'));
-                    item.classList.add('active');
-                    const tool = item.dataset.tool;
-                    Object.values(cards).forEach(c => c.classList.remove('active'));
-                    cards[tool].classList.add('active');
-                });
-            });
+            navItems.forEach(item => item.addEventListener('click', () => {
+                navItems.forEach(b => b.classList.remove('active'));
+                item.classList.add('active');
+                const tool = item.dataset.tool;
+                Object.values(cards).forEach(c => c.classList.remove('active'));
+                cards[tool].classList.add('active');
+            }));
 
             // ==================== MORSE ====================
-            const morseMap = { 'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.',' ':'/','.':'.-.-.-',',':'--..--','?':'..--..','!':'-.-.--','/':'-..-.','(':'-.--.',')':'-.--.-','&':'.-...',':':'---...',';':'-.-.-.','=':'-...-','+':'.-.-.','-':'-....-','_':'..--.-','"':'.-..-.','$':'...-..-','@':'.--.-'};
+            const morseMap = {
+                'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+                'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+                'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+                'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+                '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', ' ': '/', '.': '.-.-.-',
+                ',': '--..--', '?': '..--..', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-',
+                '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-',
+                '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-'
+            };
             const revMorse = {};
-            for (let k in morseMap) if (morseMap[k]!=='/') revMorse[morseMap[k]] = k;
-            function textToMorse(t) { return t.toUpperCase().split('').map(c => morseMap[c] || (c===' '?'/':'?')).join(' '); }
-            function morseToText(m) { return m.split('/').map(w => w.trim().split(/\s+/).map(s => revMorse[s]||(s?'?':'')).join('')).join(' '); }
+            for (let k in morseMap) if (morseMap[k] !== '/') revMorse[morseMap[k]] = k;
+
+            function textToMorse(t) { return t.toUpperCase().split('').map(c => morseMap[c] || (c === ' ' ? '/' : '?')).join(' '); }
+
+            function morseToText(m) { return m.split('/').map(w => w.trim().split(/\s+/).map(s => revMorse[s] || (s ? '?' : '')).join('')).join(' '); }
             document.getElementById('morseConvertBtn').addEventListener('click', () => {
                 const mode = document.getElementById('morseMode').value;
                 const inp = document.getElementById('morseInput').value;
                 document.getElementById('morseOutput').value = mode === 'textToMorse' ? textToMorse(inp) : morseToText(inp);
             });
             document.getElementById('morseInput').addEventListener('input', () => document.getElementById('morseConvertBtn').click());
-            document.getElementById('morseClearBtn').addEventListener('click', () => {
-                document.getElementById('morseInput').value = '';
-                document.getElementById('morseOutput').value = '';
-            });
-            document.getElementById('morseCopyBtn').addEventListener('click', () => {
-                const out = document.getElementById('morseOutput');
-                out.select();
+            document.getElementById('morseClearBtn').addEventListener('click', () => { document.getElementById('morseInput').value = '';
+                document.getElementById('morseOutput').value = ''; });
+            document.getElementById('morseCopyBtn').addEventListener('click', () => { const o = document.getElementById('morseOutput');
+                o.select();
                 document.execCommand('copy');
-                alert('Copied!');
-            });
+                alert('Copied!'); });
 
-            // Morse sound & download WAV
-            let morseCtx = null, morseTimer;
-            function stopMorse() { if (morseTimer) clearTimeout(morseTimer); if (morseCtx) { try { morseCtx.close(); } catch(e){} morseCtx=null; } }
+            let morseCtx = null,
+                morseTimer;
+
+            function stopMorse() { if (morseTimer) clearTimeout(morseTimer); if (morseCtx) { try { morseCtx.close(); } catch (e) {} morseCtx = null; } }
+
             function playMorse(morse, speed, freq) {
-                stopMorse();
-                if (!morse) return;
-                morseCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const dot = speed/1000, dash = dot*3;
+                stopMorse(); if (!morse) return;
+                morseCtx = new(window.AudioContext || window.webkitAudioContext)();
+                const dot = speed / 1000,
+                    dash = dot * 3;
                 let time = morseCtx.currentTime + 0.05;
-                for (let ch of morse) {
-                    let dur = 0, tone = false;
-                    if (ch==='.') { dur=dot; tone=true; } else if (ch==='-') { dur=dash; tone=true; } else if (ch===' ') dur=dot*2; else if (ch==='/') dur=dot*5; else dur=dot;
-                    if (tone) {
-                        const osc = morseCtx.createOscillator();
-                        const gain = morseCtx.createGain();
+                for (let ch of morse) { let dur = 0,
+                        tone = false; if (ch === '.') { dur = dot;
+                        tone = true; } else if (ch === '-') { dur = dash;
+                        tone = true; } else if (ch === ' ') dur = dot * 2; else if (ch === '/') dur = dot * 5; else dur = dot; if (
+                        tone) { const osc = morseCtx.createOscillator(); const gain = morseCtx.createGain();
                         osc.type = 'sine';
                         osc.frequency.value = freq;
                         gain.gain.setValueAtTime(0.5, time);
-                        gain.gain.exponentialRampToValueAtTime(0.001, time+dur);
+                        gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
                         osc.connect(gain);
                         gain.connect(morseCtx.destination);
                         osc.start(time);
-                        osc.stop(time+dur+0.005);
-                    }
-                    time += dur + dot;
-                }
-                morseTimer = setTimeout(() => stopMorse(), (time - morseCtx.currentTime)*1000 + 500);
+                        osc.stop(time + dur + 0.005); } time += dur + dot; }
+                morseTimer = setTimeout(() => stopMorse(), (time - morseCtx.currentTime) * 1000 + 500);
             }
-            document.getElementById('morsePlayBtn').addEventListener('click', () => {
-                const morse = document.getElementById('morseOutput').value;
-                const speed = +document.getElementById('morseSpeed').value;
-                const freq = +document.getElementById('morseFreq').value;
-                playMorse(morse, speed, freq);
-            });
+            document.getElementById('morsePlayBtn').addEventListener('click', () => { const morse = document.getElementById(
+                    'morseOutput').value; const speed = +document.getElementById('morseSpeed').value; const freq = +document
+                    .getElementById('morseFreq').value;
+                playMorse(morse, speed, freq); });
             document.getElementById('morseDownloadWav').addEventListener('click', () => {
                 const morse = document.getElementById('morseOutput').value;
                 const speed = +document.getElementById('morseSpeed').value;
                 const freq = +document.getElementById('morseFreq').value;
-                const sampleRate = 44100;
-                const dotS = Math.floor(sampleRate * speed/1000);
-                const dashS = dotS*3;
-                let total=0; const segs=[];
-                for (let ch of morse) {
-                    let dur=0, tone=false;
-                    if (ch==='.') { dur=dotS; tone=true; } else if (ch==='-') { dur=dashS; tone=true; } else if (ch===' ') dur=dotS*2; else if (ch==='/') dur=dotS*5; else dur=dotS;
-                    segs.push({dur, tone});
-                    total += dur + dotS;
-                }
+                const sr = 44100,
+                    dotS = Math.floor(sr * speed / 1000),
+                    dashS = dotS * 3;
+                let total = 0;
+                const segs = [];
+                for (let ch of morse) { let dur = 0,
+                        tone = false; if (ch === '.') { dur = dotS;
+                        tone = true; } else if (ch === '-') { dur = dashS;
+                        tone = true; } else if (ch === ' ') dur = dotS * 2; else if (ch === '/') dur = dotS * 5; else dur = dotS;
+                    segs.push({ dur, tone });
+                    total += dur + dotS; }
                 const buf = new Float32Array(total);
-                let pos=0;
-                for (let seg of segs) {
-                    if (seg.tone) for (let i=0; i<seg.dur; i++) buf[pos+i] = Math.sin(2*Math.PI*freq*i/sampleRate)*0.4;
-                    pos += seg.dur + dotS;
-                }
-                const wav = new ArrayBuffer(44 + buf.length*2);
+                let pos = 0;
+                for (let seg of segs) { if (seg.tone) for (let i = 0; i < seg.dur; i++) buf[pos + i] = Math.sin(2 * Math.PI * freq *
+                        i / sr) * 0.4;
+                    pos += seg.dur + dotS; }
+                const wav = new ArrayBuffer(44 + buf.length * 2);
                 const v = new DataView(wav);
-                const ws = (off,s)=>{ for(let i=0;i<s.length;i++) v.setUint8(off+i, s.charCodeAt(i)); };
-                ws(0,'RIFF'); v.setUint32(4,36+buf.length*2,true); ws(8,'WAVE'); ws(12,'fmt ');
-                v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
-                v.setUint32(24,sampleRate,true); v.setUint32(28,sampleRate*2,true);
-                v.setUint16(32,2,true); v.setUint16(34,16,true); ws(36,'data');
-                v.setUint32(40,buf.length*2,true);
-                for (let i=0;i<buf.length;i++) { const s = Math.max(-1,Math.min(1,buf[i])); v.setInt16(44+i*2, s<0 ? s*0x8000 : s*0x7FFF, true); }
-                const blob = new Blob([wav], {type:'audio/wav'});
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'morse.wav'; a.click();
+                const ws = (off, s) => { for (let i = 0; i < s.length; i++) v.setUint8(off + i, s.charCodeAt(i)); };
+                ws(0, 'RIFF');
+                v.setUint32(4, 36 + buf.length * 2, true);
+                ws(8, 'WAVE');
+                ws(12, 'fmt ');
+                v.setUint32(16, 16, true);
+                v.setUint16(20, 1, true);
+                v.setUint16(22, 1, true);
+                v.setUint32(24, sr, true);
+                v.setUint32(28, sr * 2, true);
+                v.setUint16(32, 2, true);
+                v.setUint16(34, 16, true);
+                ws(36, 'data');
+                v.setUint32(40, buf.length * 2, true);
+                for (let i = 0; i < buf.length; i++) { const s = Math.max(-1, Math.min(1, buf[i]));
+                    v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7FFF, true); }
+                const blob = new Blob([wav], { type: 'audio/wav' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'morse.wav';
+                a.click();
             });
-            document.getElementById('morseSpeed').addEventListener('input', function(){ document.getElementById('morseSpeedVal').textContent = this.value; });
-            document.getElementById('morseFreq').addEventListener('input', function(){ document.getElementById('morseFreqVal').textContent = this.value; });
+            document.getElementById('morseSpeed').addEventListener('input', function() { document.getElementById(
+                'morseSpeedVal').textContent = this.value; });
+            document.getElementById('morseFreq').addEventListener('input', function() { document.getElementById('morseFreqVal')
+                .textContent = this.value; });
 
-            // ==================== REAL TRANSLATE (Google Translate API gratis) ====================
+            // ==================== TRANSLATE ====================
             document.getElementById('translateBtn').addEventListener('click', async () => {
                 const source = document.getElementById('sourceLang').value;
                 const target = document.getElementById('targetLang').value;
                 const text = document.getElementById('translateInput').value.trim();
                 if (!text) return;
-                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
+                const url =
+                    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
                 try {
                     const res = await fetch(url);
                     const data = await res.json();
-                    if (data && data[0]) {
-                        const translation = data[0].map(t => t[0]).join('');
-                        document.getElementById('translateOutput').value = translation;
-                    } else {
-                        document.getElementById('translateOutput').value = 'Translation not available.';
-                    }
-                } catch (e) {
-                    document.getElementById('translateOutput').value = 'Error: Could not connect to translation service.';
-                }
+                    document.getElementById('translateOutput').value = data && data[0] ? data[0].map(t => t[0]).join('') :
+                        'No translation.';
+                } catch (e) { document.getElementById('translateOutput').value = 'Error.'; }
             });
             document.getElementById('swapLangBtn').addEventListener('click', () => {
-                const s = document.getElementById('sourceLang');
-                const t = document.getElementById('targetLang');
-                if (s.value !== 'auto') {
-                    [s.value, t.value] = [t.value, s.value];
-                }
+                const s = document.getElementById('sourceLang'),
+                    t = document.getElementById('targetLang');
+                if (s.value !== 'auto')[s.value, t.value] = [t.value, s.value];
             });
-            document.getElementById('copyTranslateBtn').addEventListener('click', () => { const o=document.getElementById('translateOutput'); o.select(); document.execCommand('copy'); alert('Copied!'); });
-            document.getElementById('clearTranslateBtn').addEventListener('click', () => { document.getElementById('translateInput').value=''; document.getElementById('translateOutput').value=''; });
+            document.getElementById('copyTranslateBtn').addEventListener('click', () => { const o = document.getElementById(
+                    'translateOutput');
+                o.select();
+                document.execCommand('copy');
+                alert('Copied!'); });
+            document.getElementById('clearTranslateBtn').addEventListener('click', () => { document.getElementById(
+                    'translateInput').value = '';
+                document.getElementById('translateOutput').value = ''; });
 
             // ==================== TTS ====================
-            function populateVoices() {
-                const sel = document.getElementById('voiceSelect');
+            function populateVoices() { const sel = document.getElementById('voiceSelect');
                 sel.innerHTML = '<option value="">Default</option>';
-                speechSynthesis.getVoices().forEach((v,i) => { const o=document.createElement('option'); o.value=i; o.textContent=v.name+' ('+v.lang+')'; sel.appendChild(o); });
-            }
+                speechSynthesis.getVoices().forEach((v, i) => { const o = document.createElement('option');
+                    o.value = i;
+                    o.textContent = v.name + ' (' + v.lang + ')';
+                    sel.appendChild(o); }); }
             if (speechSynthesis.onvoiceschanged) speechSynthesis.onvoiceschanged = populateVoices;
             populateVoices();
             let ttsUtterance;
-            document.getElementById('speakBtn').addEventListener('click', () => {
-                if (ttsUtterance) speechSynthesis.cancel();
-                const text = document.getElementById('ttsInput').value;
-                if (!text) return;
-                ttsUtterance = new SpeechSynthesisUtterance(text);
-                const sel = document.getElementById('voiceSelect');
-                if (sel.value) ttsUtterance.voice = speechSynthesis.getVoices()[+sel.value];
+            document.getElementById('speakBtn').addEventListener('click', () => { if (ttsUtterance) speechSynthesis.cancel();
+                const text = document.getElementById('ttsInput').value; if (!text) return;
+                ttsUtterance = new SpeechSynthesisUtterance(text); const sel = document.getElementById('voiceSelect'); if (sel
+                    .value) ttsUtterance.voice = speechSynthesis.getVoices()[+sel.value];
                 ttsUtterance.rate = +document.getElementById('ttsRate').value;
                 ttsUtterance.pitch = +document.getElementById('ttsPitch').value;
-                speechSynthesis.speak(ttsUtterance);
-            });
+                speechSynthesis.speak(ttsUtterance); });
             document.getElementById('pauseBtn').addEventListener('click', () => speechSynthesis.pause());
             document.getElementById('resumeBtn').addEventListener('click', () => speechSynthesis.resume());
             document.getElementById('stopBtn').addEventListener('click', () => speechSynthesis.cancel());
-            document.getElementById('clearTtsBtn').addEventListener('click', () => document.getElementById('ttsInput').value='');
-            document.getElementById('ttsRate').addEventListener('input', function(){ document.getElementById('ttsRateVal').textContent=this.value; });
-            document.getElementById('ttsPitch').addEventListener('input', function(){ document.getElementById('ttsPitchVal').textContent=this.value; });
-            document.getElementById('ttsDownloadBtn').addEventListener('click', async () => {
-                const text = document.getElementById('ttsInput').value;
-                if (!text) return;
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-                    const mr = new MediaRecorder(stream);
-                    const chunks = [];
+            document.getElementById('clearTtsBtn').addEventListener('click', () => document.getElementById('ttsInput').value =
+                '');
+            document.getElementById('ttsRate').addEventListener('input', function() { document.getElementById('ttsRateVal')
+                .textContent = this.value; });
+            document.getElementById('ttsPitch').addEventListener('input', function() { document.getElementById('ttsPitchVal')
+                .textContent = this.value; });
+            document.getElementById('ttsDownloadBtn').addEventListener('click', async () => { const text = document
+                    .getElementById('ttsInput').value; if (!text) return; try { const stream = await navigator.mediaDevices
+                        .getUserMedia({ audio: true }); const mr = new MediaRecorder(stream); const chunks = [];
                     mr.ondataavailable = e => chunks.push(e.data);
-                    mr.onstop = () => {
-                        const blob = new Blob(chunks, {type:'audio/webm'});
-                        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'speech.webm'; a.click();
-                        stream.getTracks().forEach(t=>t.stop());
-                    };
-                    mr.start();
-                    const u = new SpeechSynthesisUtterance(text);
+                    mr.onstop = () => { const blob = new Blob(chunks, { type: 'audio/webm' }); const a = document
+                            .createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = 'speech.webm';
+                        a.click();
+                        stream.getTracks().forEach(t => t.stop()); };
+                    mr.start(); const u = new SpeechSynthesisUtterance(text);
                     u.onend = () => mr.stop();
                     speechSynthesis.speak(u);
-                    setTimeout(() => { if (mr.state==='recording') mr.stop(); }, 30000);
-                } catch(e) { alert('Microphone access needed for recording.'); }
-            });
+                    setTimeout(() => { if (mr.state === 'recording') mr.stop(); }, 30000); } catch (e) { alert(
+                            'Microphone needed.'); } });
 
             // ==================== TEXT TOOLS (65+) ====================
             const toolsGrid = document.getElementById('toolsGrid');
@@ -628,134 +621,118 @@
             const gridContainer = document.getElementById('toolsGridContainer');
 
             const allTools = [
-                {cat:'Case', tools:[
-                    {id:'case-upper',name:'UPPERCASE',icon:'fa-arrow-up'},
-                    {id:'case-lower',name:'lowercase',icon:'fa-arrow-down'},
-                    {id:'case-title',name:'Title Case',icon:'fa-heading'},
-                    {id:'case-sentence',name:'Sentence case',icon:'fa-text-height'},
-                    {id:'case-toggle',name:'tOGGLE cASE',icon:'fa-exchange-alt'},
-                    {id:'case-capitalize',name:'Capitalize Words',icon:'fa-bold'},
-                    {id:'case-camel',name:'camelCase',icon:'fa-caret-right'},
-                    {id:'case-pascal',name:'PascalCase',icon:'fa-caret-up'},
-                    {id:'case-snake',name:'snake_case',icon:'fa-minus'},
-                    {id:'case-kebab',name:'kebab-case',icon:'fa-grip-lines'},
-                    {id:'case-constant',name:'CONSTANT_CASE',icon:'fa-underline'},
-                ]},
-                {cat:'Manipulate',tools:[
-                    {id:'manip-reverse',name:'Reverse Text',icon:'fa-backward'},
-                    {id:'manip-rev-words',name:'Reverse Words',icon:'fa-rotate-left'},
-                    {id:'manip-rm-spaces',name:'Remove Spaces',icon:'fa-compress-alt'},
-                    {id:'manip-rm-extra',name:'Remove Extra Spaces',icon:'fa-compress'},
-                    {id:'manip-rm-breaks',name:'Remove Line Breaks',icon:'fa-grip-lines'},
-                    {id:'manip-rm-dup',name:'Remove Duplicate Lines',icon:'fa-filter'},
-                    {id:'manip-sort-az',name:'Sort A-Z',icon:'fa-sort-alpha-down'},
-                    {id:'manip-sort-za',name:'Sort Z-A',icon:'fa-sort-alpha-up'},
-                    {id:'manip-shuffle',name:'Shuffle Lines',icon:'fa-random'},
-                    {id:'manip-trim',name:'Trim',icon:'fa-cut'},
-                    {id:'manip-rm-empty',name:'Remove Empty Lines',icon:'fa-trash-alt'},
-                    {id:'manip-add-num',name:'Add Line Numbers',icon:'fa-list-ol'},
-                    {id:'manip-rm-html',name:'Remove HTML Tags',icon:'fa-code'},
-                    {id:'manip-diff',name:'Text Diff',icon:'fa-columns'},
-                ]},
-                {cat:'Encode/Decode',tools:[
-                    {id:'enc-b64-enc',name:'Base64 Encode',icon:'fa-lock'},
-                    {id:'enc-b64-dec',name:'Base64 Decode',icon:'fa-unlock'},
-                    {id:'enc-url-enc',name:'URL Encode',icon:'fa-link'},
-                    {id:'enc-url-dec',name:'URL Decode',icon:'fa-link-slash'},
-                    {id:'enc-html-enc',name:'HTML Encode',icon:'fa-code'},
-                    {id:'enc-html-dec',name:'HTML Decode',icon:'fa-file-code'},
-                    {id:'enc-txt-bin',name:'Text → Binary',icon:'fa-microchip'},
-                    {id:'enc-bin-txt',name:'Binary → Text',icon:'fa-microchip'},
-                    {id:'enc-txt-hex',name:'Text → Hex',icon:'fa-hashtag'},
-                    {id:'enc-hex-txt',name:'Hex → Text',icon:'fa-hashtag'},
-                ]},
-                {cat:'Hash',tools:[
-                    {id:'hash-md5',name:'MD5',icon:'fa-fingerprint'},
-                    {id:'hash-sha1',name:'SHA-1',icon:'fa-fingerprint'},
-                    {id:'hash-sha256',name:'SHA-256',icon:'fa-fingerprint'},
-                    {id:'hash-sha512',name:'SHA-512',icon:'fa-fingerprint'},
-                ]},
-                {cat:'Ciphers',tools:[
-                    {id:'ciph-rot13',name:'ROT13',icon:'fa-rotate'},
-                    {id:'ciph-caesar',name:'Caesar',icon:'fa-key'},
-                    {id:'ciph-atbash',name:'Atbash',icon:'fa-mirror'},
-                    {id:'ciph-vigenere',name:'Vigenère',icon:'fa-shield'},
-                    {id:'ciph-xor',name:'XOR',icon:'fa-circle-nodes'},
-                ]},
-                {cat:'Generate',tools:[
-                    {id:'gen-lorem',name:'Lorem Ipsum',icon:'fa-file-lines'},
-                    {id:'gen-rand-str',name:'Random String',icon:'fa-dice'},
-                    {id:'gen-uuid',name:'UUID',icon:'fa-id-card'},
-                    {id:'gen-password',name:'Password',icon:'fa-key'},
-                    {id:'gen-rand-num',name:'Random Number',icon:'fa-dice-six'},
-                    {id:'gen-nanoid',name:'Nano ID',icon:'fa-tag'},
-                    {id:'gen-rand-color',name:'Random Color',icon:'fa-palette'},
-                    {id:'gen-slug',name:'Slug',icon:'fa-link'},
-                ]},
-                {cat:'QR Code',tools:[
-                    {id:'qr-text',name:'Text to QR',icon:'fa-font'},
-                    {id:'qr-link',name:'Link to QR',icon:'fa-link'},
-                ]},
-                {cat:'Extract',tools:[
-                    {id:'ext-find-rep',name:'Find & Replace',icon:'fa-arrows-rotate'},
-                    {id:'ext-emails',name:'Extract Emails',icon:'fa-envelope'},
-                    {id:'ext-urls',name:'Extract URLs',icon:'fa-globe'},
-                    {id:'ext-numbers',name:'Extract Numbers',icon:'fa-9'},
-                    {id:'ext-rm-punct',name:'Remove Punctuation',icon:'fa-i-cursor'},
-                ]},
-                {cat:'Analysis',tools:[
-                    {id:'ana-charcount',name:'Character Count',icon:'fa-calculator'},
-                    {id:'ana-wordcount',name:'Word Count',icon:'fa-font'},
-                    {id:'ana-reading',name:'Reading Time',icon:'fa-clock'},
-                    {id:'ana-letter-freq',name:'Letter Frequency',icon:'fa-chart-simple'},
-                    {id:'ana-word-freq',name:'Word Frequency',icon:'fa-cloud'},
-                    {id:'ana-palindrome',name:'Palindrome',icon:'fa-mirror'},
-                    {id:'ana-anagram',name:'Anagram',icon:'fa-shuffle'},
-                ]},
-                {cat:'Color',tools:[
-                    {id:'color-hex-rgb',name:'HEX → RGB',icon:'fa-arrow-right'},
-                    {id:'color-rgb-hex',name:'RGB → HEX',icon:'fa-arrow-left'},
-                    {id:'color-picker',name:'Color Picker',icon:'fa-eye-dropper'},
-                    {id:'color-palette',name:'Palette',icon:'fa-swatchbook'},
-                ]},
-                {cat:'Date/Time',tools:[
-                    {id:'dt-unix',name:'Unix Timestamp',icon:'fa-clock'},
-                    {id:'dt-format',name:'Date Formatter',icon:'fa-calendar-check'},
-                    {id:'dt-age',name:'Age Calculator',icon:'fa-cake-candles'},
-                    {id:'dt-diff',name:'Date Difference',icon:'fa-hourglass'},
-                ]},
-                {cat:'Converters',tools:[
-                    {id:'conv-base',name:'Number Base',icon:'fa-hashtag'},
-                    {id:'conv-roman',name:'Roman Numerals',icon:'fa-italic'},
-                    {id:'conv-length',name:'Length',icon:'fa-ruler'},
-                    {id:'conv-percent',name:'Percentage',icon:'fa-percent'},
-                ]},
-                {cat:'String Tools',tools:[
-                    {id:'str-length',name:'String Length',icon:'fa-ruler'},
-                    {id:'str-substring',name:'Substring',icon:'fa-scissors'},
-                    {id:'str-split',name:'Split',icon:'fa-divide'},
-                    {id:'str-join',name:'Join',icon:'fa-plus'},
-                    {id:'str-replace',name:'Replace',icon:'fa-rotate'},
-                    {id:'str-pad',name:'Pad',icon:'fa-expand'},
-                ]},
+                { cat: 'Case', tools: [
+                        { id: 'case-upper', name: 'UPPERCASE', icon: 'fa-arrow-up' }, { id: 'case-lower',
+                            name: 'lowercase', icon: 'fa-arrow-down' }, { id: 'case-title', name: 'Title Case',
+                            icon: 'fa-heading' }, { id: 'case-sentence', name: 'Sentence case',
+                        icon: 'fa-text-height' }, { id: 'case-toggle', name: 'tOGGLE cASE',
+                        icon: 'fa-exchange-alt' }, { id: 'case-capitalize', name: 'Capitalize Words',
+                            icon: 'fa-bold' }, { id: 'case-camel', name: 'camelCase', icon: 'fa-caret-right' },
+                        { id: 'case-pascal', name: 'PascalCase', icon: 'fa-caret-up' }, { id: 'case-snake',
+                            name: 'snake_case', icon: 'fa-minus' }, { id: 'case-kebab', name: 'kebab-case',
+                            icon: 'fa-grip-lines' }, { id: 'case-constant', name: 'CONSTANT_CASE',
+                            icon: 'fa-underline' }
+                    ] },
+                { cat: 'Manipulate', tools: [
+                        { id: 'manip-reverse', name: 'Reverse Text', icon: 'fa-backward' }, { id: 'manip-rev-words',
+                            name: 'Reverse Words', icon: 'fa-rotate-left' }, { id: 'manip-rm-spaces',
+                            name: 'Remove Spaces', icon: 'fa-compress-alt' }, { id: 'manip-rm-extra',
+                            name: 'Remove Extra Spaces', icon: 'fa-compress' }, { id: 'manip-rm-breaks',
+                            name: 'Remove Line Breaks', icon: 'fa-grip-lines' }, { id: 'manip-rm-dup',
+                            name: 'Remove Duplicate Lines', icon: 'fa-filter' }, { id: 'manip-sort-az',
+                            name: 'Sort A-Z', icon: 'fa-sort-alpha-down' }, { id: 'manip-sort-za', name: 'Sort Z-A',
+                            icon: 'fa-sort-alpha-up' }, { id: 'manip-shuffle', name: 'Shuffle Lines',
+                            icon: 'fa-random' }, { id: 'manip-trim', name: 'Trim', icon: 'fa-cut' },
+                        { id: 'manip-rm-empty', name: 'Remove Empty Lines', icon: 'fa-trash-alt' },
+                        { id: 'manip-add-num', name: 'Add Line Numbers', icon: 'fa-list-ol' }, { id: 'manip-rm-html',
+                            name: 'Remove HTML Tags', icon: 'fa-code' }, { id: 'manip-diff', name: 'Text Diff',
+                            icon: 'fa-columns' }
+                    ] },
+                { cat: 'Encode/Decode', tools: [
+                        { id: 'enc-b64-enc', name: 'Base64 Encode', icon: 'fa-lock' }, { id: 'enc-b64-dec',
+                            name: 'Base64 Decode', icon: 'fa-unlock' }, { id: 'enc-url-enc', name: 'URL Encode',
+                            icon: 'fa-link' }, { id: 'enc-url-dec', name: 'URL Decode', icon: 'fa-link-slash' },
+                        { id: 'enc-html-enc', name: 'HTML Encode', icon: 'fa-code' }, { id: 'enc-html-dec',
+                            name: 'HTML Decode', icon: 'fa-file-code' }, { id: 'enc-txt-bin',
+                            name: 'Text → Binary', icon: 'fa-microchip' }, { id: 'enc-bin-txt',
+                            name: 'Binary → Text', icon: 'fa-microchip' }, { id: 'enc-txt-hex',
+                            name: 'Text → Hex', icon: 'fa-hashtag' }, { id: 'enc-hex-txt', name: 'Hex → Text',
+                            icon: 'fa-hashtag' }
+                    ] },
+                { cat: 'Hash', tools: [
+                        { id: 'hash-md5', name: 'MD5', icon: 'fa-fingerprint' }, { id: 'hash-sha1', name: 'SHA-1',
+                            icon: 'fa-fingerprint' }, { id: 'hash-sha256', name: 'SHA-256',
+                            icon: 'fa-fingerprint' }, { id: 'hash-sha512', name: 'SHA-512',
+                        icon: 'fa-fingerprint' }
+                    ] },
+                { cat: 'Ciphers', tools: [
+                        { id: 'ciph-rot13', name: 'ROT13', icon: 'fa-rotate' }, { id: 'ciph-caesar', name: 'Caesar',
+                            icon: 'fa-key' }, { id: 'ciph-atbash', name: 'Atbash', icon: 'fa-mirror' },
+                        { id: 'ciph-vigenere', name: 'Vigenère', icon: 'fa-shield' }, { id: 'ciph-xor',
+                            name: 'XOR', icon: 'fa-circle-nodes' }
+                    ] },
+                { cat: 'Generate', tools: [
+                        { id: 'gen-lorem', name: 'Lorem Ipsum', icon: 'fa-file-lines' }, { id: 'gen-rand-str',
+                            name: 'Random String', icon: 'fa-dice' }, { id: 'gen-uuid', name: 'UUID',
+                            icon: 'fa-id-card' }, { id: 'gen-password', name: 'Password', icon: 'fa-key' },
+                        { id: 'gen-rand-num', name: 'Random Number', icon: 'fa-dice-six' }, { id: 'gen-nanoid',
+                            name: 'Nano ID', icon: 'fa-tag' }, { id: 'gen-rand-color', name: 'Random Color',
+                            icon: 'fa-palette' }, { id: 'gen-slug', name: 'Slug', icon: 'fa-link' }
+                    ] },
+                { cat: 'QR Code', tools: [
+                        { id: 'qr-text', name: 'Text to QR', icon: 'fa-font' }, { id: 'qr-link', name: 'Link to QR',
+                            icon: 'fa-link' }
+                    ] },
+                { cat: 'Extract', tools: [
+                        { id: 'ext-find-rep', name: 'Find & Replace', icon: 'fa-arrows-rotate' }, { id: 'ext-emails',
+                            name: 'Extract Emails', icon: 'fa-envelope' }, { id: 'ext-urls', name: 'Extract URLs',
+                            icon: 'fa-globe' }, { id: 'ext-numbers', name: 'Extract Numbers', icon: 'fa-9' },
+                        { id: 'ext-rm-punct', name: 'Remove Punctuation', icon: 'fa-i-cursor' },
+                        { id: 'ext-html-url', name: 'Extract HTML from URL', icon: 'fa-globe' }
+                    ] },
+                { cat: 'Analysis', tools: [
+                        { id: 'ana-charcount', name: 'Character Count', icon: 'fa-calculator' },
+                        { id: 'ana-wordcount', name: 'Word Count', icon: 'fa-font' }, { id: 'ana-reading',
+                            name: 'Reading Time', icon: 'fa-clock' }, { id: 'ana-letter-freq',
+                            name: 'Letter Frequency', icon: 'fa-chart-simple' }, { id: 'ana-word-freq',
+                            name: 'Word Frequency', icon: 'fa-cloud' }, { id: 'ana-palindrome',
+                            name: 'Palindrome', icon: 'fa-mirror' }, { id: 'ana-anagram', name: 'Anagram',
+                            icon: 'fa-shuffle' }
+                    ] },
+                { cat: 'Color', tools: [
+                        { id: 'color-hex-rgb', name: 'HEX → RGB', icon: 'fa-arrow-right' }, { id: 'color-rgb-hex',
+                            name: 'RGB → HEX', icon: 'fa-arrow-left' }, { id: 'color-picker',
+                            name: 'Color Picker', icon: 'fa-eye-dropper' }, { id: 'color-palette', name: 'Palette',
+                            icon: 'fa-swatchbook' }
+                    ] },
+                { cat: 'Date/Time', tools: [
+                        { id: 'dt-unix', name: 'Unix Timestamp', icon: 'fa-clock' }, { id: 'dt-format',
+                            name: 'Date Formatter', icon: 'fa-calendar-check' }, { id: 'dt-age',
+                            name: 'Age Calculator', icon: 'fa-cake-candles' }, { id: 'dt-diff',
+                            name: 'Date Difference', icon: 'fa-hourglass' }
+                    ] },
+                { cat: 'Converters', tools: [
+                        { id: 'conv-base', name: 'Number Base', icon: 'fa-hashtag' }, { id: 'conv-roman',
+                            name: 'Roman Numerals', icon: 'fa-italic' }, { id: 'conv-length', name: 'Length',
+                            icon: 'fa-ruler' }, { id: 'conv-percent', name: 'Percentage', icon: 'fa-percent' }
+                    ] },
+                { cat: 'String Tools', tools: [
+                        { id: 'str-length', name: 'String Length', icon: 'fa-ruler' }, { id: 'str-substring',
+                            name: 'Substring', icon: 'fa-scissors' }, { id: 'str-split', name: 'Split',
+                            icon: 'fa-divide' }, { id: 'str-join', name: 'Join', icon: 'fa-plus' },
+                        { id: 'str-replace', name: 'Replace', icon: 'fa-rotate' }, { id: 'str-pad', name: 'Pad',
+                            icon: 'fa-expand' }
+                    ] },
+                { cat: 'Preview', tools: [{ id: 'preview-html', name: 'HTML Preview', icon: 'fa-eye' }] }
             ];
 
-            function buildGrid() {
-                let html = '';
-                allTools.forEach(cat => {
-                    html += `<div class="cat-title">${cat.cat}</div>`;
-                    cat.tools.forEach(t => {
-                        html += `<div class="feature-card" data-tool="${t.id}"><i class="fas ${t.icon}"></i><h4>${t.name}</h4></div>`;
-                    });
-                });
+            function buildGrid() { let html = '';
+                allTools.forEach(cat => { html += `<div class="cat-title">${cat.cat}</div>`;
+                    cat.tools.forEach(t => { html +=
+                            `<div class="feature-card" data-tool="${t.id}"><i class="fas ${t.icon}"></i><h4>${t.name}</h4></div>`; }); });
                 toolsGrid.innerHTML = html;
-                document.querySelectorAll('.feature-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const toolId = card.dataset.tool;
-                        showToolPanel(toolId);
-                    });
-                });
-            }
+                document.querySelectorAll('.feature-card').forEach(card => card.addEventListener('click', () => showToolPanel(
+                    card.dataset.tool))); }
             buildGrid();
 
             function showToolPanel(toolId) {
@@ -769,466 +746,494 @@
             }
 
             function renderToolHTML(toolId) {
-                const s = toolId.replace(/-/g,'_');
-                // Special tools with extra inputs
+                const s = toolId.replace(/-/g, '_');
+                if (toolId === 'preview-html') return `
+                    <div class="input-group"><label>HTML Code</label><textarea id="htmlPreviewInput" rows="8" placeholder="<h1>Hello</h1>"><h1 style='color:#a855f7'>Hello World</h1><p>This is a <b>live preview</b>.</p></textarea></div>
+                    <button class="btn btn-pri btn-sm" id="updatePreviewBtn"><i class="fas fa-sync-alt"></i> Update Preview</button>
+                    <div class="input-group" style="margin-top:1rem;"><label>Live Preview</label><iframe id="previewFrame" class="preview-frame" srcdoc="<h1 style='color:#a855f7'>Hello World</h1><p>This is a <b>live preview</b>.</p>"></iframe></div>`;
+                if (toolId === 'ext-html-url') return `
+                    <div class="input-group"><label>Website URL</label><input type="url" id="htmlUrlInput" placeholder="https://example.com"></div>
+                    <button class="btn btn-pri btn-proc" data-tool="ext-html-url">Fetch HTML</button>
+                    <div class="input-group"><label>HTML Source</label><textarea id="out_ext_html_url" rows="15" readonly></textarea></div>
+                    <button class="btn btn-sec btn-copy" data-target="out_ext_html_url">Copy</button>`;
                 if (toolId === 'ciph-caesar') return `
                     <div class="input-group"><label>Shift</label><input type="number" id="caesarShift" value="3" min="1" max="25"></div>
-                    <div class="input-group"><label>Direction</label><select id="caesarDir"><option value="encrypt">Encrypt</option><option value="decrypt">Decrypt</option></select></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="4" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="ciph-caesar">Process</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
+                    <select id="caesarDir"><option value="encrypt">Encrypt</option><option value="decrypt">Decrypt</option></select>
+                    <textarea id="inp_ciph_caesar" rows="4" placeholder="Text..."></textarea>
+                    <textarea id="out_ciph_caesar" rows="4" readonly></textarea>
+                    <button class="btn btn-pri btn-proc" data-tool="ciph-caesar">Process</button><button class="btn btn-sec btn-copy" data-target="out_ciph_caesar">Copy</button>`;
                 if (toolId === 'ciph-vigenere') return `
-                    <div class="input-group"><label>Keyword</label><input type="text" id="vigenereKey" value="KEY"></div>
-                    <div class="input-group"><label>Mode</label><select id="vigenereDir"><option value="encrypt">Encrypt</option><option value="decrypt">Decrypt</option></select></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="4" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="ciph-vigenere">Process</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
+                    <input type="text" id="vigenereKey" value="KEY" placeholder="Keyword">
+                    <select id="vigenereDir"><option value="encrypt">Encrypt</option><option value="decrypt">Decrypt</option></select>
+                    <textarea id="inp_ciph_vigenere" rows="4"></textarea><textarea id="out_ciph_vigenere" rows="4" readonly></textarea>
+                    <button class="btn btn-pri btn-proc" data-tool="ciph-vigenere">Process</button><button class="btn btn-sec btn-copy" data-target="out_ciph_vigenere">Copy</button>`;
                 if (toolId === 'ciph-xor') return `
-                    <div class="input-group"><label>Key</label><input type="text" id="xorKey" value="secret"></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Result (hex)</label><textarea id="out_${s}" rows="4" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="ciph-xor">Process</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'ext-find-rep') return `
-                    <div class="input-group"><label>Find</label><input type="text" id="findText"></div>
-                    <div class="input-group"><label>Replace</label><input type="text" id="replaceText"></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="4" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="ext-find-rep">Replace All</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'manip-diff') return `
-                    <div class="input-group"><label>Text 1</label><textarea id="inp1_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Text 2</label><textarea id="inp2_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Differences</label><textarea id="out_${s}" rows="6" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="manip-diff">Compare</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-lorem') return `
-                    <div class="input-group"><label>Paragraphs</label><input type="number" id="loremCount" value="3" min="1" max="20"></div>
-                    <div class="input-group"><label>Output</label><textarea id="out_${s}" rows="6" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-lorem">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-rand-str') return `
-                    <div class="input-group"><label>Length</label><input type="number" id="randStrLen" value="16"></div>
-                    <div class="input-group"><label>Type</label><select id="randStrType"><option value="all">All</option><option value="alphanumeric">Alphanumeric</option><option value="alpha">Letters</option><option value="numeric">Numbers</option><option value="hex">Hex</option></select></div>
-                    <div class="input-group"><label>Output</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-rand-str">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-uuid') return `
-                    <div class="input-group"><label>UUID</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-uuid">New UUID</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-password') return `
-                    <div class="input-group"><label>Length</label><input type="number" id="passLen" value="20"></div>
-                    <div class="input-group"><label>Password</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-password">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-rand-num') return `
-                    <div class="input-group"><label>Min</label><input type="number" id="randNumMin" value="1"></div>
-                    <div class="input-group"><label>Max</label><input type="number" id="randNumMax" value="100"></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-rand-num">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-nanoid') return `
-                    <div class="input-group"><label>Length</label><input type="number" id="nanoidLen" value="21"></div>
-                    <div class="input-group"><label>Nano ID</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-nanoid">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-rand-color') return `
-                    <div style="width:80px;height:80px;border-radius:12px;margin:0 auto 1rem;background:#a855f7;" id="colorPrev"></div>
-                    <div class="input-group"><label>HEX</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="gen-rand-color">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'gen-slug') return genericPanel(toolId);
-                if (toolId.startsWith('qr-')) {
-                    const type = toolId.split('-')[1];
-                    return `
-                        <div class="input-group"><label>${type==='text'?'Text':'URL'}</label><textarea id="inp_${s}" rows="2" placeholder="${type==='text'?'Enter text...':'https://...'}"></textarea></div>
-                        <div class="btn-row"><button class="btn btn-pri btn-qr-gen" data-tool="${toolId}">Generate QR</button></div>
-                        <div class="qr-wrap"><canvas id="canvas_${s}" style="display:none; max-width:200px;"></canvas>
-                        <div><textarea id="out_${s}" rows="2" readonly></textarea>
-                        <button class="btn btn-pri btn-sm btn-qr-dl" data-canvas="canvas_${s}">Download PNG</button></div></div>`;
-                }
-                if (toolId === 'color-hex-rgb') return genericPanel(toolId);
-                if (toolId === 'color-rgb-hex') return `
-                    <div class="input-group"><label>R</label><input type="number" id="rgbR" value="168" min="0" max="255"></div>
-                    <div class="input-group"><label>G</label><input type="number" id="rgbG" value="85" min="0" max="255"></div>
-                    <div class="input-group"><label>B</label><input type="number" id="rgbB" value="247" min="0" max="255"></div>
-                    <div class="input-group"><label>HEX</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="color-rgb-hex">Convert</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'color-picker') return `
-                    <input type="color" id="colorPickerInput" value="#a855f7" style="height:60px;cursor:pointer;margin-bottom:1rem;">
-                    <div class="input-group"><label>HEX</label><textarea id="out_${s}_hex" rows="1" readonly></textarea></div>
-                    <div class="input-group"><label>RGB</label><textarea id="out_${s}_rgb" rows="1" readonly></textarea></div>`;
-                if (toolId === 'color-palette') return `
-                    <div id="paletteDisplay" style="display:flex;gap:8px;margin-bottom:1rem;"></div>
-                    <div class="input-group"><label>HEX Codes</label><textarea id="out_${s}" rows="3" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="color-palette">Generate</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'dt-unix') return `
-                    <div class="input-group"><label>Timestamp</label><input type="number" id="unixInput" placeholder="1690000000"></div>
-                    <div class="input-group"><label>Date</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="dt-unix">Convert</button><button class="btn btn-sec" id="btnNowUnix">Now</button></div>`;
-                if (toolId === 'dt-format') return `
-                    <div class="input-group"><label>Formatted Dates</label><textarea id="out_${s}" rows="6" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="dt-format">Refresh</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'dt-age') return `
-                    <div class="input-group"><label>Birth Date</label><input type="date" id="birthDate" value="2000-01-01"></div>
-                    <div class="input-group"><label>Age</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="dt-age">Calculate</button></div>`;
-                if (toolId === 'dt-diff') return `
-                    <div class="input-group"><label>Date 1</label><input type="date" id="date1" value="2025-01-01"></div>
-                    <div class="input-group"><label>Date 2</label><input type="date" id="date2" value="2025-12-31"></div>
-                    <div class="input-group"><label>Difference</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="dt-diff">Calculate</button></div>`;
-                if (toolId === 'conv-base') return `
-                    <div class="input-group"><label>Number</label><input type="text" id="baseInput" value="255"></div>
-                    <div class="input-group"><label>From Base</label><input type="number" id="baseFrom" value="10" min="2" max="36"></div>
-                    <div class="input-group"><label>To Base</label><input type="number" id="baseTo" value="16" min="2" max="36"></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="conv-base">Convert</button></div>`;
-                if (toolId === 'conv-roman') return `
-                    <div class="input-group"><label>Number</label><input type="number" id="romanNum" value="2024"></div>
-                    <div class="input-group"><label>Direction</label><select id="romanDir"><option value="toRoman">Number → Roman</option><option value="fromRoman">Roman → Number</option></select></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="conv-roman">Convert</button></div>`;
-                if (toolId === 'conv-length') return `
-                    <div class="input-group"><label>Value</label><input type="number" id="lenVal" value="1"></div>
-                    <div class="input-group"><label>From</label><select id="lenFrom"><option value="m">Meters</option><option value="km">Km</option><option value="cm">Cm</option><option value="in">Inches</option><option value="ft">Feet</option></select></div>
-                    <div class="input-group"><label>To</label><select id="lenTo"><option value="ft">Feet</option><option value="m">Meters</option></select></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="conv-length">Convert</button></div>`;
-                if (toolId === 'conv-percent') return `
-                    <div class="input-group"><label>Value</label><input type="number" id="percVal" value="50"></div>
-                    <div class="input-group"><label>Total</label><input type="number" id="percTotal" value="200"></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="conv-percent">Calculate</button></div>`;
-                if (toolId === 'str-substring') return `
-                    <div class="input-group"><label>Start</label><input type="number" id="subStart" value="0"></div>
-                    <div class="input-group"><label>End</label><input type="number" id="subEnd" value="5"></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="3"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="str-substring">Extract</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'str-split') return `
-                    <div class="input-group"><label>Delimiter</label><input type="text" id="splitDelim" value=","></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="3"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="4" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="str-split">Split</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'str-join') return `
-                    <div class="input-group"><label>Joiner</label><input type="text" id="joinStr" value=", "></div>
-                    <div class="input-group"><label>Lines</label><textarea id="inp_${s}" rows="4"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="str-join">Join</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'str-replace') return `
-                    <div class="input-group"><label>Find</label><input type="text" id="strRepFind"></div>
-                    <div class="input-group"><label>Replace</label><input type="text" id="strRepWith"></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="3"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="str-replace">Replace</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                if (toolId === 'str-pad') return `
-                    <div class="input-group"><label>Target Length</label><input type="number" id="padLen" value="10"></div>
-                    <div class="input-group"><label>Char</label><input type="text" id="padChar" value=" " maxlength="1"></div>
-                    <div class="input-group"><label>Direction</label><select id="padDir"><option value="right">Right</option><option value="left">Left</option><option value="both">Both</option></select></div>
-                    <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="2"></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="2" readonly></textarea></div>
-                    <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="str-pad">Pad</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
-                // Default generic panel
-                return genericPanel(toolId);
-            }
-
-            function genericPanel(toolId) {
-                const s = toolId.replace(/-/g,'_');
+                    <input type="text" id="xorKey" value="secret"><textarea id="inp_ciph_xor" rows="4"></textarea>
+                    <textarea id="out_ciph_xor" rows="4" readonly></textarea>
+                    <button class="btn btn-pri btn-proc" data-tool="ciph-xor">Process</button><button class="btn btn-sec btn-copy" data-target="out_ciph_xor">Copy</button>`;
+                if (toolId.startsWith('qr-')) { const type = toolId.split('-')[1]; return `
+                    <textarea id="inp_qr_${type}" rows="2" placeholder="${type==='text'?'Text':'URL'}"></textarea>
+                    <button class="btn btn-pri btn-qr-gen" data-tool="${toolId}">Generate QR</button>
+                    <div class="qr-wrap"><canvas id="canvas_qr_${type}" style="display:none; max-width:200px;"></canvas>
+                    <div><textarea id="out_qr_${type}" rows="2" readonly></textarea><button class="btn btn-pri btn-sm btn-qr-dl" data-canvas="canvas_qr_${type}">Download PNG</button></div></div>`; }
                 return `
                     <div class="input-group"><label>Input</label><textarea id="inp_${s}" rows="4" placeholder="Enter text..."></textarea></div>
-                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="4" readonly placeholder="Result..."></textarea></div>
+                    <div class="input-group"><label>Result</label><textarea id="out_${s}" rows="4" readonly></textarea></div>
                     <div class="btn-row"><button class="btn btn-pri btn-proc" data-tool="${toolId}">Process</button><button class="btn btn-sec btn-copy" data-target="out_${s}">Copy</button></div>`;
             }
 
             function bindToolEvents(toolId) {
-                const s = toolId.replace(/-/g,'_');
-                const procBtn = document.querySelector(`.btn-proc[data-tool="${toolId}"]`);
-                if (procBtn) {
-                    procBtn.addEventListener('click', () => {
-                        if (typeof processTool === 'function') processTool(toolId);
-                    });
+                const s = toolId.replace(/-/g, '_');
+                if (toolId === 'preview-html') {
+                    const inp = document.getElementById('htmlPreviewInput');
+                    const frame = document.getElementById('previewFrame');
+                    const update = () => { if (frame) frame.srcdoc = inp?.value || ''; };
+                    document.getElementById('updatePreviewBtn')?.addEventListener('click', update);
+                    inp?.addEventListener('input', update);
+                    update();
+                    return;
                 }
-                document.querySelectorAll('.btn-copy').forEach(b => {
-                    b.addEventListener('click', () => {
-                        const target = document.getElementById(b.dataset.target);
-                        if (target) { target.select(); document.execCommand('copy'); alert('Copied!'); }
-                    });
-                });
+                document.querySelector(`.btn-proc[data-tool="${toolId}"]`)?.addEventListener('click', () => processTool(
+                    toolId));
+                document.querySelectorAll('.btn-copy').forEach(b => b.addEventListener('click', () => { const t = document
+                        .getElementById(b.dataset.target); if (t) { t.select();
+                        document.execCommand('copy');
+                        alert('Copied!'); } }));
                 const qrBtn = document.querySelector(`.btn-qr-gen[data-tool="${toolId}"]`);
-                if (qrBtn) {
-                    qrBtn.addEventListener('click', () => {
-                        const inp = document.getElementById('inp_'+s)?.value || '';
-                        const canvas = document.getElementById('canvas_'+s);
-                        const out = document.getElementById('out_'+s);
-                        if (!canvas) return;
-                        canvas.style.display = 'block';
-                        canvas.width = 200; canvas.height = 200;
-                        try {
-                            const qr = qrcode(0, 'M');
-                            qr.addData(inp);
-                            qr.make();
-                            const ctx = canvas.getContext('2d');
-                            const size = 200;
-                            const mc = qr.getModuleCount();
-                            const cell = Math.floor(size/(mc+8));
-                            const off = Math.floor((size - cell*mc)/2);
-                            ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
-                            ctx.fillStyle = '#000';
-                            for (let r=0; r<mc; r++) for (let c=0; c<mc; c++) if (qr.isDark(r,c)) ctx.fillRect(off+c*cell, off+r*cell, cell, cell);
-                            if (out) out.value = inp;
-                        } catch(e) { canvas.style.display = 'none'; }
-                    });
-                }
-                const qrDl = document.querySelector(`.btn-qr-dl[data-canvas="canvas_${s}"]`);
-                if (qrDl) {
-                    qrDl.addEventListener('click', () => {
-                        const canvas = document.getElementById('canvas_'+s);
-                        if (!canvas || canvas.style.display==='none') return;
-                        const a = document.createElement('a'); a.download = 'qr.png'; a.href = canvas.toDataURL(); a.click();
-                    });
-                }
-                if (toolId === 'color-picker') {
-                    const picker = document.getElementById('colorPickerInput');
-                    if (picker) {
-                        picker.addEventListener('input', function() {
-                            const hex = this.value;
-                            document.getElementById('out_'+s+'_hex').value = hex;
-                            const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
-                            if (m) document.getElementById('out_'+s+'_rgb').value = `rgb(${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)})`;
-                        });
-                        picker.dispatchEvent(new Event('input'));
-                    }
-                }
-                const btnNow = document.getElementById('btnNowUnix');
-                if (btnNow) btnNow.addEventListener('click', () => {
-                    const ts = Math.floor(Date.now()/1000);
-                    document.getElementById('unixInput').value = ts;
-                    document.getElementById('out_'+s).value = new Date(ts*1000).toString();
+                if (qrBtn) qrBtn.addEventListener('click', () => {
+                    const type = toolId.split('-')[1];
+                    const inp = document.getElementById('inp_qr_' + type)?.value || '';
+                    const canvas = document.getElementById('canvas_qr_' + type);
+                    const out = document.getElementById('out_qr_' + type);
+                    if (!canvas) return;
+                    canvas.style.display = 'block';
+                    canvas.width = 200;
+                    canvas.height = 200;
+                    try {
+                        const qr = qrcode(0, 'M');
+                        qr.addData(inp);
+                        qr.make();
+                        const ctx = canvas.getContext('2d');
+                        const size = 200;
+                        const mc = qr.getModuleCount();
+                        const cell = Math.floor(size / (mc + 8));
+                        const off = Math.floor((size - cell * mc) / 2);
+                        ctx.fillStyle = '#fff';
+                        ctx.fillRect(0, 0, size, size);
+                        ctx.fillStyle = '#000';
+                        for (let r = 0; r < mc; r++) for (let c = 0; c < mc; c++) if (qr.isDark(r, c)) ctx.fillRect(off + c * cell,
+                            off + r * cell, cell, cell);
+                        if (out) out.value = inp;
+                    } catch (e) { canvas.style.display = 'none'; }
                 });
+                const qrDl = document.querySelector(`.btn-qr-dl[data-canvas="canvas_qr_${toolId.split('-')[1]}"]`);
+                if (qrDl) qrDl.addEventListener('click', () => { const canvas = document.getElementById(qrDl.dataset.canvas); if (
+                        !canvas || canvas.style.display === 'none') return; const a = document.createElement('a');
+                    a.download = 'qr.png';
+                    a.href = canvas.toDataURL();
+                    a.click(); });
+                if (toolId === 'color-picker') { document.getElementById('colorPickerInput')?.addEventListener('input',
+                    function() { const hex = this.value;
+                        document.getElementById('out_color_picker_hex').value = hex; const m = hex.match(
+                            /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i); if (m) document.getElementById(
+                                'out_color_picker_rgb').value =
+                            `rgb(${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)})`; }); }
+                if (toolId === 'dt-unix') document.getElementById('btnNowUnix')?.addEventListener('click', () => { const ts = Math
+                        .floor(Date.now() / 1000);
+                    document.getElementById('unixInput').value = ts;
+                    document.getElementById('out_dt_unix').value = new Date(ts * 1000).toString(); });
             }
 
             function processTool(toolId) {
-                const s = toolId.replace(/-/g,'_');
-                const inp = document.getElementById('inp_'+s)?.value || '';
-                const out = document.getElementById('out_'+s);
-                const setOut = (v) => { if (out) out.value = v; };
-
+                const s = toolId.replace(/-/g, '_');
+                const inpEl = document.getElementById('inp_' + s);
+                const inp = inpEl?.value || '';
+                const outEl = document.getElementById('out_' + s);
+                const setOut = (v) => { if (outEl) outEl.value = v; };
+                if (toolId === 'ext-html-url') {
+                    const url = document.getElementById('htmlUrlInput')?.value.trim();
+                    if (!url) { setOut('Enter URL'); return; }
+                    setOut('Fetching...');
+                    const proxies = [
+                        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+                        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+                        `https://corsproxy.io/?${encodeURIComponent(url)}`
+                    ];
+                    (async function tryFetch(i) { if (i >= proxies.length) { setOut(
+                                'All proxies failed. The site may block CORS. Try a different URL or use a browser extension.'
+                                ); return; } try { const r = await fetch(proxies[i]); if (!r.ok) throw new Error(
+                                'status ' + r.status);
+                            setOut(await r.text()); } catch (e) { tryFetch(i + 1); } })(0);
+                    return;
+                }
                 const fns = {
-                    'case-upper': s=>s.toUpperCase(), 'case-lower': s=>s.toLowerCase(),
-                    'case-title': s=>s.replace(/\b\w+/g,w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()),
-                    'case-sentence': s=>s.replace(/(^\s*[a-z]|\.\s+[a-z])/gi,c=>c.toUpperCase()),
-                    'case-toggle': s=>s.split('').map(c=>c===c.toUpperCase()?c.toLowerCase():c.toUpperCase()).join(''),
-                    'case-capitalize': s=>s.replace(/\b\w/g,c=>c.toUpperCase()),
-                    'case-camel': s=>s.replace(/[^a-zA-Z0-9]+(.)/g,(_,c)=>c.toUpperCase()).replace(/^[A-Z]/,c=>c.toLowerCase()),
-                    'case-pascal': s=>{const c=s.replace(/[^a-zA-Z0-9]+(.)/g,(_,c)=>c.toUpperCase()).replace(/^[A-Z]/,c=>c.toLowerCase()); return c.charAt(0).toUpperCase()+c.slice(1);},
-                    'case-snake': s=>s.replace(/[\s-]+/g,'_').replace(/([a-z])([A-Z])/g,'$1_$2').toLowerCase().replace(/[^a-z0-9_]/g,''),
-                    'case-kebab': s=>s.replace(/[\s_]+/g,'-').replace(/([a-z])([A-Z])/g,'$1-$2').toLowerCase().replace(/[^a-z0-9-]/g,''),
-                    'case-constant': s=>s.replace(/[\s-]+/g,'_').replace(/([a-z])([A-Z])/g,'$1_$2').toUpperCase().replace(/[^A-Z0-9_]/g,''),
-                    'manip-reverse': s=>s.split('').reverse().join(''),
-                    'manip-rev-words': s=>s.split(/\s+/).reverse().join(' '),
-                    'manip-rm-spaces': s=>s.replace(/\s/g,''),
-                    'manip-rm-extra': s=>s.replace(/\s+/g,' ').trim(),
-                    'manip-rm-breaks': s=>s.replace(/\r?\n/g,' '),
-                    'manip-rm-dup': s=>[...new Set(s.split(/\r?\n/))].join('\n'),
-                    'manip-sort-az': s=>s.split(/\r?\n/).sort().join('\n'),
-                    'manip-sort-za': s=>s.split(/\r?\n/).sort((a,b)=>b.localeCompare(a)).join('\n'),
-                    'manip-shuffle': s=>{const l=s.split(/\r?\n/); for(let i=l.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[l[i],l[j]]=[l[j],l[i]];} return l.join('\n');},
-                    'manip-trim': s=>s.trim(), 'manip-rm-empty': s=>s.split(/\r?\n/).filter(l=>l.trim()).join('\n'),
-                    'manip-add-num': s=>s.split(/\r?\n/).map((l,i)=>`${i+1}. ${l}`).join('\n'),
-                    'manip-rm-html': s=>s.replace(/<[^>]*>?/gm, ''),
-                    'enc-b64-enc': s=>{try{return btoa(unescape(encodeURIComponent(s)))}catch(e){return btoa(s)}},
-                    'enc-b64-dec': s=>{try{return decodeURIComponent(escape(atob(s)))}catch(e){try{return atob(s)}catch(e2){return'Invalid'}}},
-                    'enc-url-enc': s=>encodeURIComponent(s), 'enc-url-dec': s=>{try{return decodeURIComponent(s)}catch(e){return'Invalid'}},
-                    'enc-html-enc': s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'),
-                    'enc-html-dec': s=>{const t=document.createElement('textarea'); t.innerHTML=s; return t.value},
-                    'enc-txt-bin': s=>s.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' '),
-                    'enc-bin-txt': s=>s.split(' ').map(b=>String.fromCharCode(parseInt(b,2))).join(''),
-                    'enc-txt-hex': s=>s.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' '),
-                    'enc-hex-txt': s=>s.replace(/\s/g,'').match(/.{1,2}/g).map(h=>String.fromCharCode(parseInt(h,16))).join(''),
-                    'ciph-rot13': s=>s.replace(/[a-zA-Z]/g,c=>String.fromCharCode(c.charCodeAt(0)+(c.toUpperCase()<='M'?13:-13))),
-                    'ciph-atbash': s=>s.replace(/[a-zA-Z]/g,c=>{const b=c<='Z'?65:97; return String.fromCharCode(b+(25-(c.charCodeAt(0)-b)));}),
-                    'ext-rm-punct': s=>s.replace(/[^\w\s]/g,''),
-                    'gen-slug': s=>s.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/[\s_]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''),
-                    'str-length': s=>`Length: ${s.length} · UTF-8 bytes: ${new TextEncoder().encode(s).length}`,
+                    'case-upper': s => s.toUpperCase(),
+                    'case-lower': s => s.toLowerCase(),
+                    'case-title': s => s.replace(/\b\w+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()),
+                    'case-sentence': s => s.replace(/(^\s*[a-z]|\.\s+[a-z])/gi, c => c.toUpperCase()),
+                    'case-toggle': s => s.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase())
+                        .join(''),
+                    'case-capitalize': s => s.replace(/\b\w/g, c => c.toUpperCase()),
+                    'case-camel': s => s.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()).replace(/^[A-Z]/, c => c
+                        .toLowerCase()),
+                    'case-pascal': s => { const c = s.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()).replace(
+                            /^[A-Z]/, c => c.toLowerCase()); return c.charAt(0).toUpperCase() + c.slice(1); },
+                    'case-snake': s => s.replace(/[\s-]+/g, '_').replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase().replace(
+                        /[^a-z0-9_]/g, ''),
+                    'case-kebab': s => s.replace(/[\s_]+/g, '-').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(
+                        /[^a-z0-9-]/g, ''),
+                    'case-constant': s => s.replace(/[\s-]+/g, '_').replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase().replace(
+                        /[^A-Z0-9_]/g, ''),
+                    'manip-reverse': s => s.split('').reverse().join(''),
+                    'manip-rev-words': s => s.split(/\s+/).reverse().join(' '),
+                    'manip-rm-spaces': s => s.replace(/\s/g, ''),
+                    'manip-rm-extra': s => s.replace(/\s+/g, ' ').trim(),
+                    'manip-rm-breaks': s => s.replace(/\r?\n/g, ' '),
+                    'manip-rm-dup': s => [...new Set(s.split(/\r?\n/))].join('\n'),
+                    'manip-sort-az': s => s.split(/\r?\n/).sort().join('\n'),
+                    'manip-sort-za': s => s.split(/\r?\n/).sort((a, b) => b.localeCompare(a)).join('\n'),
+                    'manip-shuffle': s => { const l = s.split(/\r?\n/); for (let i = l.length - 1; i > 0; i--) { const j =
+                                Math.floor(Math.random() * (i + 1));
+                            [l[i], l[j]] = [l[j], l[i]]; } return l.join('\n'); },
+                    'manip-trim': s => s.trim(),
+                    'manip-rm-empty': s => s.split(/\r?\n/).filter(l => l.trim()).join('\n'),
+                    'manip-add-num': s => s.split(/\r?\n/).map((l, i) => `${i+1}. ${l}`).join('\n'),
+                    'manip-rm-html': s => s.replace(/<[^>]*>?/gm, ''),
+                    'enc-b64-enc': s => { try { return btoa(unescape(encodeURIComponent(s))); } catch (e) { return btoa(
+                        s); } },
+                    'enc-b64-dec': s => { try { return decodeURIComponent(escape(atob(s))); } catch (e) { try { return atob(
+                                s); } catch (e2) { return 'Invalid'; } } },
+                    'enc-url-enc': s => encodeURIComponent(s),
+                    'enc-url-dec': s => { try { return decodeURIComponent(s); } catch (e) { return 'Invalid'; } },
+                    'enc-html-enc': s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'),
+                    'enc-html-dec': s => { const t = document.createElement('textarea');
+                        t.innerHTML = s; return t.value; },
+                    'enc-txt-bin': s => s.split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' '),
+                    'enc-bin-txt': s => s.split(' ').map(b => String.fromCharCode(parseInt(b, 2))).join(''),
+                    'enc-txt-hex': s => s.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join(' '),
+                    'enc-hex-txt': s => s.replace(/\s/g, '').match(/.{1,2}/g).map(h => String.fromCharCode(parseInt(h, 16)))
+                        .join(''),
+                    'ciph-rot13': s => s.replace(/[a-zA-Z]/g, c => String.fromCharCode(c.charCodeAt(0) + (c.toUpperCase() <=
+                        'M' ? 13 : -13))),
+                    'ciph-atbash': s => s.replace(/[a-zA-Z]/g, c => { const b = c <= 'Z' ? 65 : 97; return String
+                            .fromCharCode(b + (25 - (c.charCodeAt(0) - b))); }),
+                    'ext-rm-punct': s => s.replace(/[^\w\s]/g, ''),
+                    'gen-slug': s => s.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_]+/g, '-').replace(/-+/g, '-')
+                        .replace(/^-|-$/g, ''),
+                    'str-length': s => `Length: ${s.length} · UTF-8: ${new TextEncoder().encode(s).length} bytes`,
                 };
-
                 if (fns[toolId]) { setOut(fns[toolId](inp)); return; }
-
-                if (toolId === 'manip-diff') {
-                    const text1 = document.getElementById('inp1_'+s)?.value || '';
-                    const text2 = document.getElementById('inp2_'+s)?.value || '';
-                    const lines1 = text1.split('\n');
-                    const lines2 = text2.split('\n');
-                    const maxLen = Math.max(lines1.length, lines2.length);
-                    let diff = '';
-                    for (let i = 0; i < maxLen; i++) {
-                        const l1 = lines1[i] || '';
-                        const l2 = lines2[i] || '';
-                        if (l1 !== l2) {
-                            diff += `Line ${i+1}:\n  - ${l1}\n  + ${l2}\n`;
-                        }
-                    }
-                    setOut(diff || 'No differences found.');
-                } else if (toolId === 'ciph-caesar') {
+                // Special tools
+                if (toolId === 'ciph-caesar') {
                     const shift = +document.getElementById('caesarShift')?.value || 3;
-                    const dir = document.getElementById('caesarDir')?.value === 'decrypt' ? 26-(shift%26) : shift%26;
-                    setOut(inp.replace(/[a-zA-Z]/g, c => String.fromCharCode(((c.charCodeAt(0)-(c<='Z'?65:97)+dir)%26)+(c<='Z'?65:97))));
+                    const dir = document.getElementById('caesarDir')?.value === 'decrypt' ? 26 - (shift % 26) : shift % 26;
+                    setOut(inp.replace(/[a-zA-Z]/g, c => String.fromCharCode(((c.charCodeAt(0) - (c <= 'Z' ? 65 : 97) + dir) %
+                        26) + (c <= 'Z' ? 65 : 97))));
                 } else if (toolId === 'ciph-vigenere') {
-                    const key = (document.getElementById('vigenereKey')?.value||'KEY').toUpperCase().replace(/[^A-Z]/g,'');
-                    const dir = document.getElementById('vigenereDir')?.value==='decrypt';
-                    if (!key) return setOut('Key required');
-                    let res='',ki=0;
-                    for (let c of inp) {
-                        if (/[a-zA-Z]/.test(c)) {
-                            const b = c<='Z'?65:97;
-                            const sh = key.charCodeAt(ki%key.length)-65;
-                            res += String.fromCharCode(((c.charCodeAt(0)-b + (dir?26-sh:sh))%26)+b);
-                            ki++;
-                        } else res+=c;
-                    }
+                    const key = (document.getElementById('vigenereKey')?.value || 'KEY').toUpperCase().replace(/[^A-Z]/g, '');
+                    const dir = document.getElementById('vigenereDir')?.value === 'decrypt';
+                    if (!key) { setOut('Key required'); return; }
+                    let res = '',
+                        ki = 0;
+                    for (let c of inp) { if (/[a-zA-Z]/.test(c)) { const b = c <= 'Z' ? 65 : 97; const sh = key.charCodeAt(
+                                ki % key.length) - 65;
+                            res += String.fromCharCode(((c.charCodeAt(0) - b + (dir ? 26 - sh : sh)) % 26) + b);
+                            ki++; } else res += c; }
                     setOut(res);
                 } else if (toolId === 'ciph-xor') {
-                    const key = document.getElementById('xorKey')?.value||'secret';
-                    let xor=''; for(let i=0;i<inp.length;i++) xor+=String.fromCharCode(inp.charCodeAt(i)^key.charCodeAt(i%key.length));
-                    setOut(xor.split('').map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(''));
+                    const key = document.getElementById('xorKey')?.value || 'secret';
+                    let xor = '';
+                    for (let i = 0; i < inp.length; i++) xor += String.fromCharCode(inp.charCodeAt(i) ^ key.charCodeAt(i % key
+                        .length));
+                    setOut(xor.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
                 } else if (toolId === 'ext-find-rep') {
-                    const find = document.getElementById('findText')?.value||'';
-                    const rep = document.getElementById('replaceText')?.value||'';
-                    setOut(find ? inp.split(find).join(rep) : inp);
+                    setOut((document.getElementById('findText')?.value ? inp.split(document.getElementById('findText').value)
+                        .join(document.getElementById('replaceText')?.value || '') : inp));
                 } else if (toolId === 'gen-lorem') {
-                    const n = +document.getElementById('loremCount')?.value||3;
-                    const words = 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'.repeat(5).split(' ');
-                    const paras = []; for(let i=0;i<n;i++){ const s=Math.floor(Math.random()*(words.length-30)); paras.push(words.slice(s,s+30).join(' ')); }
+                    const n = +document.getElementById('loremCount')?.value || 3;
+                    const words =
+                        'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'
+                        .repeat(5).split(' ');
+                    const paras = [];
+                    for (let i = 0; i < n; i++) { const s = Math.floor(Math.random() * (words.length - 30));
+                        paras.push(words.slice(s, s + 30).join(' ')); }
                     setOut(paras.join('\n\n'));
                 } else if (toolId === 'gen-rand-str') {
-                    const len = +document.getElementById('randStrLen')?.value||16;
-                    const type = document.getElementById('randStrType')?.value||'all';
-                    const sets={all:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()',alphanumeric:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',alpha:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',numeric:'0123456789',hex:'0123456789abcdef'};
-                    const chars=sets[type]; let r=''; const buf=new Uint32Array(len); crypto.getRandomValues(buf); for(let i=0;i<len;i++) r+=chars[buf[i]%chars.length];
+                    const len = +document.getElementById('randStrLen')?.value || 16;
+                    const type = document.getElementById('randStrType')?.value || 'all';
+                    const sets = { all: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()',
+                        alphanumeric: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+                        alpha: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', numeric: '0123456789',
+                        hex: '0123456789abcdef' };
+                    const chars = sets[type];
+                    let r = '';
+                    const buf = new Uint32Array(len);
+                    crypto.getRandomValues(buf);
+                    for (let i = 0; i < len; i++) r += chars[buf[i] % chars.length];
                     setOut(r);
                 } else if (toolId === 'gen-uuid') setOut(crypto.randomUUID());
                 else if (toolId === 'gen-password') {
-                    const len=+document.getElementById('passLen')?.value||20;
-                    const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-                    let r=''; const buf=new Uint32Array(len); crypto.getRandomValues(buf); for(let i=0;i<len;i++) r+=chars[buf[i]%chars.length];
+                    const len = +document.getElementById('passLen')?.value || 20;
+                    const chars =
+                        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+                    let r = '';
+                    const buf = new Uint32Array(len);
+                    crypto.getRandomValues(buf);
+                    for (let i = 0; i < len; i++) r += chars[buf[i] % chars.length];
                     setOut(r);
-                } else if (toolId === 'gen-rand-num') {
-                    const min=+document.getElementById('randNumMin')?.value||1, max=+document.getElementById('randNumMax')?.value||100;
-                    setOut(min+Math.floor(Math.random()*(max-min+1)));
-                } else if (toolId === 'gen-nanoid') {
-                    const len=+document.getElementById('nanoidLen')?.value||21;
-                    const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
-                    let r=''; const buf=new Uint32Array(len); crypto.getRandomValues(buf); for(let i=0;i<len;i++) r+=chars[buf[i]%chars.length];
+                } else if (toolId === 'gen-rand-num') setOut(+document.getElementById('randNumMin')?.value + Math.floor(Math
+                    .random() * ((+document.getElementById('randNumMax')?.value || 100) - (+document.getElementById(
+                        'randNumMin')?.value || 1) + 1)));
+                else if (toolId === 'gen-nanoid') {
+                    const len = +document.getElementById('nanoidLen')?.value || 21;
+                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+                    let r = '';
+                    const buf = new Uint32Array(len);
+                    crypto.getRandomValues(buf);
+                    for (let i = 0; i < len; i++) r += chars[buf[i] % chars.length];
                     setOut(r);
                 } else if (toolId === 'gen-rand-color') {
-                    const r=Math.floor(Math.random()*256),g=Math.floor(Math.random()*256),b=Math.floor(Math.random()*256);
-                    const hex='#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
-                    setOut(hex); const el = document.getElementById('colorPrev'); if (el) el.style.background=hex;
-                } else if (toolId === 'color-hex-rgb') {
-                    const m=inp.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
-                    setOut(m?`rgb(${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)})`:'Invalid HEX');
-                } else if (toolId === 'color-rgb-hex') {
-                    const r=+document.getElementById('rgbR')?.value||0, g=+document.getElementById('rgbG')?.value||0, b=+document.getElementById('rgbB')?.value||0;
-                    setOut('#'+[r,g,b].map(v=>Math.min(255,Math.max(0,v)).toString(16).padStart(2,'0')).join(''));
-                } else if (toolId === 'color-palette') {
-                    const cols=Array.from({length:5},()=>'#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'));
-                    setOut(cols.join('\n'));
-                    const disp = document.getElementById('paletteDisplay'); if(disp) disp.innerHTML=cols.map(c=>`<div style="width:50px;height:50px;border-radius:10px;background:${c};border:2px solid rgba(255,255,255,0.2);"></div>`).join('');
-                } else if (toolId === 'dt-unix') {
-                    const ts=+document.getElementById('unixInput')?.value;
-                    setOut(ts?new Date(ts*1000).toString():'');
-                } else if (toolId === 'dt-format') {
-                    const now=new Date();
-                    setOut(`ISO: ${now.toISOString()}\nUTC: ${now.toUTCString()}\nLocal: ${now.toLocaleString()}\nUnix: ${Math.floor(now.getTime()/1000)}`);
-                } else if (toolId === 'dt-age') {
-                    const bd=new Date(document.getElementById('birthDate')?.value);
-                    const now=new Date();
-                    let age=now.getFullYear()-bd.getFullYear();
-                    if (now.getMonth()<bd.getMonth()||(now.getMonth()===bd.getMonth()&&now.getDate()<bd.getDate())) age--;
-                    setOut(`${age} years old`);
-                } else if (toolId === 'dt-diff') {
-                    const d1=new Date(document.getElementById('date1')?.value), d2=new Date(document.getElementById('date2')?.value);
-                    setOut(`${Math.floor(Math.abs(d2-d1)/(1000*60*60*24))} days`);
-                } else if (toolId === 'conv-base') {
-                    const num=document.getElementById('baseInput')?.value, from=+document.getElementById('baseFrom')?.value, to=+document.getElementById('baseTo')?.value;
-                    try{ setOut(parseInt(num,from).toString(to)); }catch(e){ setOut('Invalid'); }
-                } else if (toolId === 'conv-roman') {
-                    const num=document.getElementById('romanNum')?.value, dir=document.getElementById('romanDir')?.value;
-                    if (dir==='toRoman') {
-                        const vals=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
-                        let n=+num, r=''; for(let [v,s] of vals) while(n>=v){ r+=s; n-=v; } setOut(r);
-                    } else {
-                        const map={M:1000,D:500,C:100,L:50,X:10,V:5,I:1}; let r=0; const s=String(num).toUpperCase();
-                        for(let i=0;i<s.length;i++){ const cv=map[s[i]]||0, nv=map[s[i+1]]||0; r+=cv<nv?-cv:cv; } setOut(r);
-                    }
-                } else if (toolId === 'conv-length') {
-                    const val=+document.getElementById('lenVal')?.value, from=document.getElementById('lenFrom')?.value, to=document.getElementById('lenTo')?.value;
-                    const toM={m:1,km:1000,cm:0.01,in:0.0254,ft:0.3048}, fromM={m:1,km:0.001,cm:100,in:39.3701,ft:3.28084};
-                    const meters=val*(toM[from]||1); setOut(`${val} ${from} = ${(meters*(fromM[to]||1)).toFixed(4)} ${to}`);
-                } else if (toolId === 'conv-percent') {
-                    const val=+document.getElementById('percVal')?.value, total=+document.getElementById('percTotal')?.value;
-                    setOut(`${val} of ${total} = ${((val/total)*100).toFixed(2)}%`);
-                } else if (toolId === 'str-substring') {
-                    const start=+document.getElementById('subStart')?.value, end=+document.getElementById('subEnd')?.value;
-                    setOut(inp.substring(start,end));
-                } else if (toolId === 'str-split') {
-                    const delim=document.getElementById('splitDelim')?.value||','; setOut(inp.split(delim).join('\n'));
-                } else if (toolId === 'str-join') {
-                    const joiner=document.getElementById('joinStr')?.value||', '; setOut(inp.split(/\r?\n/).filter(l=>l.trim()).join(joiner));
-                } else if (toolId === 'str-replace') {
-                    const find=document.getElementById('strRepFind')?.value, rep=document.getElementById('strRepWith')?.value;
-                    setOut(find ? inp.split(find).join(rep) : inp);
-                } else if (toolId === 'str-pad') {
-                    const len=+document.getElementById('padLen')?.value, char=(document.getElementById('padChar')?.value||' ')[0]||' ';
-                    const dir=document.getElementById('padDir')?.value;
-                    if (dir==='right') setOut(inp.padEnd(len,char));
-                    else if (dir==='left') setOut(inp.padStart(len,char));
-                    else { const t=len-inp.length; setOut(inp.padStart(inp.length+Math.floor(t/2),char).padEnd(len,char)); }
-                } else if (toolId === 'hash-md5') {
-                    setOut(md5(inp));
-                } else if (['hash-sha1','hash-sha256','hash-sha512'].includes(toolId)) {
+                    const r = Math.floor(Math.random() * 256),
+                        g = Math.floor(Math.random() * 256),
+                        b = Math.floor(Math.random() * 256);
+                    const hex = '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+                    setOut(hex);
+                    document.getElementById('colorPrev').style.background = hex;
+                } else if (toolId === 'hash-md5') setOut(md5(inp));
+                else if (['hash-sha1', 'hash-sha256', 'hash-sha512'].includes(toolId)) {
                     const algo = toolId.split('-')[1].toUpperCase() === 'SHA1' ? 'SHA-1' : toolId.split('-')[1].toUpperCase();
-                    crypto.subtle.digest(algo, new TextEncoder().encode(inp)).then(b => {
-                        setOut(Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''));
-                    }).catch(()=>setOut('Error'));
-                }
+                    crypto.subtle.digest(algo, new TextEncoder().encode(inp)).then(b => setOut(Array.from(new Uint8Array(b)).map(
+                        x => x.toString(16).padStart(2, '0')).join(''))).catch(() => setOut('Error'));
+                } else if (toolId === 'color-hex-rgb') {
+                    const m = inp.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+                    setOut(m ? `rgb(${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)})` : 'Invalid HEX');
+                } else if (toolId === 'color-rgb-hex') {
+                    const r = +document.getElementById('rgbR')?.value || 0,
+                        g = +document.getElementById('rgbG')?.value || 0,
+                        b = +document.getElementById('rgbB')?.value || 0;
+                    setOut('#' + [r, g, b].map(v => Math.min(255, Math.max(0, v)).toString(16).padStart(2, '0')).join(''));
+                } else if (toolId === 'color-palette') {
+                    const cols = Array.from({ length: 5 }, () => '#' + Math.floor(Math.random() * 16777215).toString(16)
+                        .padStart(6, '0'));
+                    setOut(cols.join('\n'));
+                    document.getElementById('paletteDisplay').innerHTML = cols.map(c =>
+                        `<div style="width:50px;height:50px;border-radius:10px;background:${c};border:2px solid rgba(255,255,255,0.2);"></div>`
+                        ).join('');
+                } else if (toolId === 'dt-unix') setOut(document.getElementById('unixInput')?.value ? new Date(+document
+                    .getElementById('unixInput').value * 1000).toString() : '');
+                else if (toolId === 'dt-format') { const now = new Date();
+                    setOut(
+                        `ISO: ${now.toISOString()}\nUTC: ${now.toUTCString()}\nLocal: ${now.toLocaleString()}\nUnix: ${Math.floor(now.getTime()/1000)}`
+                        ); } else if (toolId === 'dt-age') { const bd = new Date(document.getElementById('birthDate')
+                        ?.value);
+                    const now = new Date(); let age = now.getFullYear() - bd.getFullYear(); if (now.getMonth() < bd.getMonth() ||
+                        (now.getMonth() === bd.getMonth() && now.getDate() < bd.getDate())) age--;
+                    setOut(`${age} years`); } else if (toolId === 'dt-diff') { const d1 = new Date(document.getElementById(
+                            'date1')?.value),
+                        d2 = new Date(document.getElementById('date2')?.value);
+                    setOut(`${Math.floor(Math.abs(d2-d1)/(1000*60*60*24))} days`); } else if (toolId === 'conv-base') { try {
+                        setOut(parseInt(document.getElementById('baseInput')?.value, +document.getElementById('baseFrom')
+                            ?.value || 10).toString(+document.getElementById('baseTo')?.value || 16)); } catch (e) { setOut(
+                            'Invalid'); } } else if (toolId === 'conv-roman') { const num = document.getElementById(
+                            'romanNum')?.value,
+                        dir = document.getElementById('romanDir')?.value; if (dir === 'toRoman') { const vals = [
+                            [1000, 'M'],
+                            [900, 'CM'],
+                            [500, 'D'],
+                            [400, 'CD'],
+                            [100, 'C'],
+                            [90, 'XC'],
+                            [50, 'L'],
+                            [40, 'XL'],
+                            [10, 'X'],
+                            [9, 'IX'],
+                            [5, 'V'],
+                            [4, 'IV'],
+                            [1, 'I']
+                        ];
+                        let n = +num,
+                            r = '';
+                        for (let [v, s] of vals) while (n >= v) { r += s;
+                            n -= v; }
+                        setOut(r); } else { const map = { M: 1000, D: 500, C: 100, L: 50, X: 10, V: 5, I: 1 }; let r =
+                            0; const s = String(num).toUpperCase(); for (let i = 0; i < s.length; i++) { const cv =
+                                map[s[i]] || 0,
+                                nv = map[s[i + 1]] || 0;
+                            r += cv < nv ? -cv : cv; }
+                        setOut(r); } } else if (toolId === 'conv-length') { const val = +document.getElementById(
+                            'lenVal')?.value,
+                        from = document.getElementById('lenFrom')?.value,
+                        to = document.getElementById('lenTo')?.value; const toM = { m: 1, km: 1000, cm: 0.01, in: 0.0254,
+                            ft: 0.3048 },
+                        fromM = { m: 1, km: 0.001, cm: 100, in: 39.3701, ft: 3.28084 }; const meters = val * (toM[from] ||
+                            1);
+                    setOut(`${val} ${from} = ${(meters*(fromM[to]||1)).toFixed(4)} ${to}`); } else if (toolId ===
+                    'conv-percent') { const val = +document.getElementById('percVal')?.value,
+                        total = +document.getElementById('percTotal')?.value;
+                    setOut(`${val} of ${total} = ${((val/total)*100).toFixed(2)}%`); } else if (toolId ===
+                    'str-substring') setOut(inp.substring(+document.getElementById('subStart')?.value || 0, +document
+                        .getElementById('subEnd')?.value || 5));
+                else if (toolId === 'str-split') setOut(inp.split(document.getElementById('splitDelim')?.value || ',')
+                    .join('\n'));
+                else if (toolId === 'str-join') setOut(inp.split(/\r?\n/).filter(l => l.trim()).join(document.getElementById(
+                    'joinStr')?.value || ', '));
+                else if (toolId === 'str-replace') { const find = document.getElementById('strRepFind')?.value; setOut(find ?
+                        inp.split(find).join(document.getElementById('strRepWith')?.value || '') : inp); } else if (
+                    toolId === 'str-pad') { const len = +document.getElementById('padLen')?.value || 10,
+                        char = (document.getElementById('padChar')?.value || ' ')[0] || ' ',
+                        dir = document.getElementById('padDir')?.value || 'right'; if (dir === 'right') setOut(inp.padEnd(
+                            len, char)); else if (dir === 'left') setOut(inp.padStart(len, char)); else { const t = len - inp
+                            .length;
+                        setOut(inp.padStart(inp.length + Math.floor(t / 2), char).padEnd(len, char)); } } else if (
+                    toolId === 'manip-diff') { const t1 = document.getElementById('inp1_manip_diff')?.value || '',
+                        t2 = document.getElementById('inp2_manip_diff')?.value || ''; const l1 = t1.split('\n'),
+                        l2 = t2.split('\n'); const max = Math.max(l1.length, l2.length); let diff = ''; for (let i =
+                            0; i < max; i++) { if ((l1[i] || '') !== (l2[i] || '')) diff +=
+                            `Line ${i+1}:\n  - ${l1[i]||''}\n  + ${l2[i]||''}\n`; }
+                    setOut(diff || 'No differences.'); } else if (toolId === 'ana-charcount') { const lines = inp.split(
+                            /\r?\n/),
+                        words = inp.trim().split(/\s+/).filter(w => w);
+                    setOut(
+                        `Chars: ${inp.length} · Words: ${words.length} · Lines: ${lines.length} · Sentences: ${(inp.match(/[.!?]+/g)||[]).length}`
+                        ); } else if (toolId === 'ana-wordcount') { const words = inp.trim().split(/\s+/).filter(w => w); const
+                        unique = new Set(words.map(w => w.toLowerCase()));
+                    setOut(`Total: ${words.length} · Unique: ${unique.size}`); } else if (toolId === 'ana-reading') { const
+                        words = inp.trim().split(/\s+/).filter(w => w).length;
+                    setOut(`~${Math.ceil(words/200)} min`); } else if (toolId === 'ana-letter-freq') { const clean = inp
+                            .toUpperCase().replace(/[^A-Z]/g, ''),
+                        freq = {}; for (let c of clean) freq[c] = (freq[c] || 0) + 1;
+                    setOut(Object.entries(freq).sort((a, b) => b[1] - a[1]).map(([l, c]) => `${l}: ${c}`).join('\n')); } else if (
+                    toolId === 'ana-word-freq') { const words = inp.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
+                        .filter(w => w),
+                        freq = {}; for (let w of words) freq[w] = (freq[w] || 0) + 1;
+                    setOut(Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([w, c]) => `${w}: ${c}`).join(
+                        '\n')); } else if (toolId === 'ana-palindrome') { const rev = inp.replace(/[^a-zA-Z0-9]/g, '')
+                        .toLowerCase().split('').reverse().join('');
+                    setOut(inp ? (inp.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() === rev ? '✅ Palindrome' : '❌ Not') :
+                        'Enter text'); } else if (toolId === 'ana-anagram') { const a = (document.getElementById(
+                            'anagram1')?.value || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase().split('').sort().join(
+                            ''),
+                        b = (document.getElementById('anagram2')?.value || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase()
+                        .split('').sort().join('');
+                    setOut((a && b) ? (a === b ? '✅ Anagrams' : '❌ Not') : 'Need both texts'); }
             }
 
             function md5(str) {
-                function rl(x,n){return (x<<n)|(x>>>(32-n));}
-                function au(x,y){return ((x&0x7fffffff)+(y&0x7fffffff))^(x&0x80000000)^(y&0x80000000);}
-                function F(x,y,z){return (x&y)|((~x)&z);}
-                function G(x,y,z){return (x&z)|(y&(~z));}
-                function H(x,y,z){return x^y^z;}
-                function I(x,y,z){return y^(x|(~z));}
-                function FF(a,b,c,d,x,s,ac){a=au(a,au(au(F(b,c,d),x),ac));return au(rl(a,s),b);}
-                function GG(a,b,c,d,x,s,ac){a=au(a,au(au(G(b,c,d),x),ac));return au(rl(a,s),b);}
-                function HH(a,b,c,d,x,s,ac){a=au(a,au(au(H(b,c,d),x),ac));return au(rl(a,s),b);}
-                function II(a,b,c,d,x,s,ac){a=au(a,au(au(I(b,c,d),x),ac));return au(rl(a,s),b);}
-                function ct(s){const w=[];for(let i=0;i<s.length-3;i+=4)w.push((s.charCodeAt(i)&0xff)|((s.charCodeAt(i+1)&0xff)<<8)|((s.charCodeAt(i+2)&0xff)<<16)|((s.charCodeAt(i+3)&0xff)<<24));const rem=s.length%4;if(rem){let wv=0;for(let i=0;i<rem;i++)wv|=(s.charCodeAt(s.length-rem+i)&0xff)<<(i*8);w.push(wv);}return w;}
-                const x=ct(str);let a=0x67452301,b=0xefcdab89,c=0x98badcfe,d=0x10325476;
-                const ol=str.length*8;x.push(0x80);while((x.length*32)%512!==448)x.push(0);x.push(ol&0xffffffff);x.push((ol/0x100000000)|0);
-                for(let i=0;i<x.length;i+=16){
-                    const oa=a,ob=b,oc=c,od=d;
-                    a=FF(a,b,c,d,x[i+0],7,0xd76aa478);d=FF(d,a,b,c,x[i+1],12,0xe8c7b756);c=FF(c,d,a,b,x[i+2],17,0x242070db);b=FF(b,c,d,a,x[i+3],22,0xc1bdceee);
-                    a=FF(a,b,c,d,x[i+4],7,0xf57c0faf);d=FF(d,a,b,c,x[i+5],12,0x4787c62a);c=FF(c,d,a,b,x[i+6],17,0xa8304613);b=FF(b,c,d,a,x[i+7],22,0xfd469501);
-                    a=FF(a,b,c,d,x[i+8],7,0x698098d8);d=FF(d,a,b,c,x[i+9],12,0x8b44f7af);c=FF(c,d,a,b,x[i+10],17,0xffff5bb1);b=FF(b,c,d,a,x[i+11],22,0x895cd7be);
-                    a=FF(a,b,c,d,x[i+12],7,0x6b901122);d=FF(d,a,b,c,x[i+13],12,0xfd987193);c=FF(c,d,a,b,x[i+14],17,0xa679438e);b=FF(b,c,d,a,x[i+15],22,0x49b40821);
-                    a=GG(a,b,c,d,x[i+1],5,0xf61e2562);d=GG(d,a,b,c,x[i+6],9,0xc040b340);c=GG(c,d,a,b,x[i+11],14,0x265e5a51);b=GG(b,c,d,a,x[i+0],20,0xe9b6c7aa);
-                    a=GG(a,b,c,d,x[i+5],5,0xd62f105d);d=GG(d,a,b,c,x[i+10],9,0x2441453);c=GG(c,d,a,b,x[i+15],14,0xd8a1e681);b=GG(b,c,d,a,x[i+4],20,0xe7d3fbc8);
-                    a=GG(a,b,c,d,x[i+9],5,0x21e1cde6);d=GG(d,a,b,c,x[i+14],9,0xc33707d6);c=GG(c,d,a,b,x[i+3],14,0xf4d50d87);b=GG(b,c,d,a,x[i+8],20,0x455a14ed);
-                    a=GG(a,b,c,d,x[i+13],5,0xa9e3e905);d=GG(d,a,b,c,x[i+2],9,0xfcefa3f8);c=GG(c,d,a,b,x[i+7],14,0x676f02d9);b=GG(b,c,d,a,x[i+12],20,0x8d2a4c8a);
-                    a=HH(a,b,c,d,x[i+5],4,0xfffa3942);d=HH(d,a,b,c,x[i+8],11,0x8771f681);c=HH(c,d,a,b,x[i+11],16,0x6d9d6122);b=HH(b,c,d,a,x[i+14],23,0xfde5380c);
-                    a=HH(a,b,c,d,x[i+1],4,0xa4beea44);d=HH(d,a,b,c,x[i+4],11,0x4bdecfa9);c=HH(c,d,a,b,x[i+7],16,0xf6bb4b60);b=HH(b,c,d,a,x[i+10],23,0xbebfbc70);
-                    a=HH(a,b,c,d,x[i+13],4,0x289b7ec6);d=HH(d,a,b,c,x[i+0],11,0xeaa127fa);c=HH(c,d,a,b,x[i+3],16,0xd4ef3085);b=HH(b,c,d,a,x[i+6],23,0x4881d05);
-                    a=HH(a,b,c,d,x[i+9],4,0xd9d4d039);d=HH(d,a,b,c,x[i+12],11,0xe6db99e5);c=HH(c,d,a,b,x[i+15],16,0x1fa27cf8);b=HH(b,c,d,a,x[i+2],23,0xc4ac5665);
-                    a=II(a,b,c,d,x[i+0],6,0xf4292244);d=II(d,a,b,c,x[i+7],10,0x432aff97);c=II(c,d,a,b,x[i+14],15,0xab9423a7);b=II(b,c,d,a,x[i+5],21,0xfc93a039);
-                    a=II(a,b,c,d,x[i+12],6,0x655b59c3);d=II(d,a,b,c,x[i+3],10,0x8f0ccc92);c=II(c,d,a,b,x[i+10],15,0xffeff47d);b=II(b,c,d,a,x[i+1],21,0x85845dd1);
-                    a=II(a,b,c,d,x[i+8],6,0x6fa87e4f);d=II(d,a,b,c,x[i+15],10,0xfe2ce6e0);c=II(c,d,a,b,x[i+6],15,0xa3014314);b=II(b,c,d,a,x[i+13],21,0x4e0811a1);
-                    a=II(a,b,c,d,x[i+4],6,0xf7537e82);d=II(d,a,b,c,x[i+11],10,0xbd3af235);c=II(c,d,a,b,x[i+2],15,0x2ad7d2bb);b=II(b,c,d,a,x[i+9],21,0xeb86d391);
-                    a=au(a,oa);b=au(b,ob);c=au(c,oc);d=au(d,od);
-                }
-                const hex=n=>{let s='';for(let i=0;i<4;i++)s+=((n>>(i*8))&0xff).toString(16).padStart(2,'0');return s;};
-                return hex(a)+hex(b)+hex(c)+hex(d);
+                function rl(x, n) { return (x << n) | (x >>> (32 - n)); }
+
+                function au(x, y) { return ((x & 0x7fffffff) + (y & 0x7fffffff)) ^ (x & 0x80000000) ^ (y & 0x80000000); }
+
+                function F(x, y, z) { return (x & y) | ((~x) & z); }
+
+                function G(x, y, z) { return (x & z) | (y & (~z)); }
+
+                function H(x, y, z) { return x ^ y ^ z; }
+
+                function I(x, y, z) { return y ^ (x | (~z)); }
+
+                function FF(a, b, c, d, x, s, ac) { a = au(a, au(au(F(b, c, d), x), ac)); return au(rl(a, s), b); }
+
+                function GG(a, b, c, d, x, s, ac) { a = au(a, au(au(G(b, c, d), x), ac)); return au(rl(a, s), b); }
+
+                function HH(a, b, c, d, x, s, ac) { a = au(a, au(au(H(b, c, d), x), ac)); return au(rl(a, s), b); }
+
+                function II(a, b, c, d, x, s, ac) { a = au(a, au(au(I(b, c, d), x), ac)); return au(rl(a, s), b); }
+
+                function ct(s) { const w = []; for (let i = 0; i < s.length - 3; i += 4) w.push((s.charCodeAt(i) & 0xff) | ((
+                            s.charCodeAt(i + 1) & 0xff) << 8) | ((s.charCodeAt(i + 2) & 0xff) << 16) | ((s.charCodeAt(i +
+                            3) & 0xff) << 24)); const rem = s.length % 4; if (rem) { let wv = 0; for (let i = 0; i < rem; i++)
+                            wv |= (s.charCodeAt(s.length - rem + i) & 0xff) << (i * 8);
+                    w.push(wv); } return w; }
+                const x = ct(str);
+                let a = 0x67452301,
+                    b = 0xefcdab89,
+                    c = 0x98badcfe,
+                    d = 0x10325476;
+                const ol = str.length * 8;
+                x.push(0x80);
+                while ((x.length * 32) % 512 !== 448) x.push(0);
+                x.push(ol & 0xffffffff);
+                x.push((ol / 0x100000000) | 0);
+                for (let i = 0; i < x.length; i += 16) { const oa = a,
+                        ob = b,
+                        oc = c,
+                        od = d;
+                    a = FF(a, b, c, d, x[i + 0], 7, 0xd76aa478);
+                    d = FF(d, a, b, c, x[i + 1], 12, 0xe8c7b756);
+                    c = FF(c, d, a, b, x[i + 2], 17, 0x242070db);
+                    b = FF(b, c, d, a, x[i + 3], 22, 0xc1bdceee);
+                    a = FF(a, b, c, d, x[i + 4], 7, 0xf57c0faf);
+                    d = FF(d, a, b, c, x[i + 5], 12, 0x4787c62a);
+                    c = FF(c, d, a, b, x[i + 6], 17, 0xa8304613);
+                    b = FF(b, c, d, a, x[i + 7], 22, 0xfd469501);
+                    a = FF(a, b, c, d, x[i + 8], 7, 0x698098d8);
+                    d = FF(d, a, b, c, x[i + 9], 12, 0x8b44f7af);
+                    c = FF(c, d, a, b, x[i + 10], 17, 0xffff5bb1);
+                    b = FF(b, c, d, a, x[i + 11], 22, 0x895cd7be);
+                    a = FF(a, b, c, d, x[i + 12], 7, 0x6b901122);
+                    d = FF(d, a, b, c, x[i + 13], 12, 0xfd987193);
+                    c = FF(c, d, a, b, x[i + 14], 17, 0xa679438e);
+                    b = FF(b, c, d, a, x[i + 15], 22, 0x49b40821);
+                    a = GG(a, b, c, d, x[i + 1], 5, 0xf61e2562);
+                    d = GG(d, a, b, c, x[i + 6], 9, 0xc040b340);
+                    c = GG(c, d, a, b, x[i + 11], 14, 0x265e5a51);
+                    b = GG(b, c, d, a, x[i + 0], 20, 0xe9b6c7aa);
+                    a = GG(a, b, c, d, x[i + 5], 5, 0xd62f105d);
+                    d = GG(d, a, b, c, x[i + 10], 9, 0x2441453);
+                    c = GG(c, d, a, b, x[i + 15], 14, 0xd8a1e681);
+                    b = GG(b, c, d, a, x[i + 4], 20, 0xe7d3fbc8);
+                    a = GG(a, b, c, d, x[i + 9], 5, 0x21e1cde6);
+                    d = GG(d, a, b, c, x[i + 14], 9, 0xc33707d6);
+                    c = GG(c, d, a, b, x[i + 3], 14, 0xf4d50d87);
+                    b = GG(b, c, d, a, x[i + 8], 20, 0x455a14ed);
+                    a = GG(a, b, c, d, x[i + 13], 5, 0xa9e3e905);
+                    d = GG(d, a, b, c, x[i + 2], 9, 0xfcefa3f8);
+                    c = GG(c, d, a, b, x[i + 7], 14, 0x676f02d9);
+                    b = GG(b, c, d, a, x[i + 12], 20, 0x8d2a4c8a);
+                    a = HH(a, b, c, d, x[i + 5], 4, 0xfffa3942);
+                    d = HH(d, a, b, c, x[i + 8], 11, 0x8771f681);
+                    c = HH(c, d, a, b, x[i + 11], 16, 0x6d9d6122);
+                    b = HH(b, c, d, a, x[i + 14], 23, 0xfde5380c);
+                    a = HH(a, b, c, d, x[i + 1], 4, 0xa4beea44);
+                    d = HH(d, a, b, c, x[i + 4], 11, 0x4bdecfa9);
+                    c = HH(c, d, a, b, x[i + 7], 16, 0xf6bb4b60);
+                    b = HH(b, c, d, a, x[i + 10], 23, 0xbebfbc70);
+                    a = HH(a, b, c, d, x[i + 13], 4, 0x289b7ec6);
+                    d = HH(d, a, b, c, x[i + 0], 11, 0xeaa127fa);
+                    c = HH(c, d, a, b, x[i + 3], 16, 0xd4ef3085);
+                    b = HH(b, c, d, a, x[i + 6], 23, 0x4881d05);
+                    a = HH(a, b, c, d, x[i + 9], 4, 0xd9d4d039);
+                    d = HH(d, a, b, c, x[i + 12], 11, 0xe6db99e5);
+                    c = HH(c, d, a, b, x[i + 15], 16, 0x1fa27cf8);
+                    b = HH(b, c, d, a, x[i + 2], 23, 0xc4ac5665);
+                    a = II(a, b, c, d, x[i + 0], 6, 0xf4292244);
+                    d = II(d, a, b, c, x[i + 7], 10, 0x432aff97);
+                    c = II(c, d, a, b, x[i + 14], 15, 0xab9423a7);
+                    b = II(b, c, d, a, x[i + 5], 21, 0xfc93a039);
+                    a = II(a, b, c, d, x[i + 12], 6, 0x655b59c3);
+                    d = II(d, a, b, c, x[i + 3], 10, 0x8f0ccc92);
+                    c = II(c, d, a, b, x[i + 10], 15, 0xffeff47d);
+                    b = II(b, c, d, a, x[i + 1], 21, 0x85845dd1);
+                    a = II(a, b, c, d, x[i + 8], 6, 0x6fa87e4f);
+                    d = II(d, a, b, c, x[i + 15], 10, 0xfe2ce6e0);
+                    c = II(c, d, a, b, x[i + 6], 15, 0xa3014314);
+                    b = II(b, c, d, a, x[i + 13], 21, 0x4e0811a1);
+                    a = II(a, b, c, d, x[i + 4], 6, 0xf7537e82);
+                    d = II(d, a, b, c, x[i + 11], 10, 0xbd3af235);
+                    c = II(c, d, a, b, x[i + 2], 15, 0x2ad7d2bb);
+                    b = II(b, c, d, a, x[i + 9], 21, 0xeb86d391);
+                    a = au(a, oa);
+                    b = au(b, ob);
+                    c = au(c, oc);
+                    d = au(d, od); }
+                const hex = n => { let s = ''; for (let i = 0; i < 4; i++) s += ((n >> (i * 8)) & 0xff).toString(16).padStart(
+                        2, '0'); return s; };
+                return hex(a) + hex(b) + hex(c) + hex(d);
             }
 
-            backBtn.addEventListener('click', () => {
-                gridContainer.style.display = 'block';
+            backBtn.addEventListener('click', () => { gridContainer.style.display = 'block';
                 backBtn.style.display = 'none';
-                workPanel.style.display = 'none';
-            });
+                workPanel.style.display = 'none'; });
         })();
     </script>
 </body>
